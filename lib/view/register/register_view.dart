@@ -1,5 +1,8 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/widgets/app_button.dart';
+import 'package:complainz/widgets/app_textfield.dart';
+import 'package:complainz/widgets/app_textpassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -55,106 +58,45 @@ class _RegisterViewState extends State<RegisterView> {
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
       child: Column(
         children: [
-          Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              shape: BoxShape.rectangle,
-              border: Border.all(
-                color: Colors.black,
-              ),
-            ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Username',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ),
+          const AppTextField(
+            hinText: 'Username',
           ),
           const SizedBox(
             height: AppSizes.padding / 2,
           ),
-          Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              shape: BoxShape.rectangle,
-              border: Border.all(
-                color: Colors.black,
-              ),
-            ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Email',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ),
+          const AppTextField(
+            hinText: 'Email',
           ),
           const SizedBox(
             height: AppSizes.padding / 2,
           ),
-          Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              shape: BoxShape.rectangle,
-              border: Border.all(
-                color: Colors.black,
-              ),
-            ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'No Handphone',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ),
+          const AppTextField(
+            hinText: 'No Handphone',
           ),
           const SizedBox(
             height: AppSizes.padding / 2,
           ),
-          Container(
+          AppTextPassword(
+            obscureText: _passwordVisible,
+            hinText: 'Password',
+            icon: Icon(
+              _passwordVisible ? Icons.visibility_off : Icons.visibility,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            },
+          ),
+          const SizedBox(
+            height: AppSizes.padding / 2,
+          ),
+          AppTextPassword(
+            obscureText: _passwordVisible,
+            hinText: 'Ulangi Password',
+            onPressed: () {},
+          ),
+          /* Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
               shape: BoxShape.rectangle,
@@ -254,62 +196,53 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
               ],
             ),
-          ),
+          ), */
         ],
       ),
     );
   }
 
   Widget registerButton() {
-    return Column(
-      children: [
-        SizedBox(
-          width: 350,
-          height: 45,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              backgroundColor: AppColors.primaryColor,
-            ),
-            onPressed: () {},
-            child: const Text(
-              'Daftar',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding / 2),
+      child: Column(
+        children: [
+          AppButton(
+            onTap: () {},
+            text: 'Daftar',
+            height: 45,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
+          const SizedBox(height: AppSizes.padding),
+          RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Belum Punya Akun, ',
+                  style: TextStyle(
+                    color: AppColors.font,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Masuk',
+                  style: const TextStyle(
+                    color: AppColors.font,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    },
+                ),
+              ],
             ),
           ),
-        ),
-        const SizedBox(height: AppSizes.padding),
-        RichText(
-          text: TextSpan(
-            children: [
-              const TextSpan(
-                text: 'Belum Punya Akun, ',
-                style: TextStyle(
-                  color: AppColors.font,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              TextSpan(
-                text: 'Masuk',
-                style: const TextStyle(
-                  color: AppColors.font,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

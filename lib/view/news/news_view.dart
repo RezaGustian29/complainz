@@ -1,5 +1,8 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/widgets/app_back_button.dart';
+import 'package:complainz/widgets/app_card_news.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,7 +24,13 @@ class _NewsViewState extends State<NewsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                newsCard(),
+                const AppBackButton(
+                  text: 'Berita Terkini',
+                ),
+                const SizedBox(height: AppSizes.padding),
+                popularNews(),
+                const SizedBox(height: AppSizes.padding),
+                //newsCard(),
                 const SizedBox(height: AppSizes.padding),
                 latestNews(),
                 const SizedBox(height: AppSizes.padding),
@@ -30,6 +39,49 @@ class _NewsViewState extends State<NewsView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget popularNews() {
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 250,
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor,
+            borderRadius: BorderRadius.circular(AppSizes.radius * 2),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppSizes.radius * 2),
+            child: Image.asset(
+              'assets/images/images_news_sample.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: -25, // Half of the height of the container
+          left: 20,
+          right: 20,
+          child: Container(
+            height: 50,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Text(
+              'News Headline',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -75,10 +127,10 @@ class _NewsViewState extends State<NewsView> {
   }
 
   Widget latestNews() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Terbaru',
           style: TextStyle(
             fontSize: 32,
@@ -86,38 +138,16 @@ class _NewsViewState extends State<NewsView> {
             color: AppColors.primaryColor,
           ),
         ),
-        const SizedBox(height: AppSizes.padding / 2),
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/detail-news');
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.secondary100,
-              borderRadius: BorderRadius.circular(AppSizes.radius * 2),
-              boxShadow: const [
-                BoxShadow(
-                  color: AppColors.shadowColor,
-                  blurRadius: 8,
-                  offset: Offset(0, 0),
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppSizes.padding / 2),
-                  child: Image.asset(
-                    'assets/images/images_news_sample.jpg',
-                    width: 96,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
+        SizedBox(height: AppSizes.padding / 2),
+        AppCardNews(),
+        SizedBox(height: AppSizes.padding / 2),
+        AppCardNews(),
+        SizedBox(height: AppSizes.padding / 2),
+        AppCardNews(),
+        SizedBox(height: AppSizes.padding / 2),
+        AppCardNews(),
+        SizedBox(height: AppSizes.padding / 2),
+        AppCardNews(),
       ],
     );
   }

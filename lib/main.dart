@@ -1,7 +1,11 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/provider/bottom_navbar_provider.dart';
+import 'package:complainz/view/account/my_account_view.dart';
 import 'package:complainz/view/bottom_navbar/bottom_navbar.dart';
-import 'package:complainz/view/create_report/create_report.dart';
+import 'package:complainz/view/create_report/create_aspiration_view.dart';
+import 'package:complainz/view/create_report/create_repor_list_viewt.dart';
+import 'package:complainz/view/create_report/create_report_complaint_view.dart';
+import 'package:complainz/view/history/history_report_view.dart';
 import 'package:complainz/view/news/detail_news_view.dart';
 import 'package:complainz/view/register/register_view.dart';
 import 'package:complainz/view/auth/auth_view.dart';
@@ -10,6 +14,9 @@ import 'package:complainz/view/login/login_view.dart';
 import 'package:complainz/view/news/news_view.dart';
 import 'package:complainz/view/report/report_view.dart';
 import 'package:complainz/view/splash/splash_view.dart';
+import 'package:complainz/view/status/action_status_view.dart';
+import 'package:complainz/view/status/status_complaint_view.dart';
+import 'package:complainz/view/update/update_password_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,10 +42,10 @@ class MyApp extends StatelessWidget {
             background: AppColors.secondary100,
             seedColor: const Color(0xff3C486B),
           ),
-          /* appBarTheme: const AppBarTheme(
+          appBarTheme: const AppBarTheme(
             backgroundColor: AppColors.secondary100,
             surfaceTintColor: Colors.transparent,
-          ), */
+          ),
         ),
         routes: {
           '/': (context) => const SplashView(),
@@ -48,9 +55,19 @@ class MyApp extends StatelessWidget {
           '/bottom-avbar': (context) => const BottomNavbar(),
           '/home': (context) => const HomeView(),
           '/report': (context) => const ReportView(),
-          '/create-report': (context) => const CreateReport(),
+          '/create-report': (context) => const CreateReportListView(),
           '/news': (context) => const NewsView(),
           '/detail-news': (context) => const DetailNewsView(),
+          '/create-complaint': (context) => const CreateReportComplaintView(
+                title: '',
+                child: null,
+              ),
+          '/create-aspiration': (context) => const CreateAspirationView(),
+          '/status': (context) => const StatusComplaintView(),
+          '/my-account': (context) => const MyAccountView(),
+          '/action-status': (context) => const ActionStatusView(),
+          '/history': (context) => const HistoryReportView(),
+          '/update-pass': (context) => const UpdatePasswordView(),
         },
       ),
     );

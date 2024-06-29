@@ -135,3 +135,35 @@ class AppTextField extends StatelessWidget {
               ),
             ),
           ), */
+
+
+/* Container(
+            height: 56,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              shape: BoxShape.rectangle,
+              border: Border.all(
+                color: Colors.black,
+              ),
+            ),
+            child: Center(
+              child: TextFormField(
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primaryColor,
+                ),
+                decoration: const InputDecoration.collapsed(
+                  hintText: 'Username',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+              ),
+            ),
+          ), */

@@ -9,7 +9,7 @@ class AppTextPassword extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final bool obscureText;
-  final Widget icon;
+  final Widget? icon;
   final Function() onPressed;
   final TextEditingController? controller;
   const AppTextPassword({
@@ -21,7 +21,7 @@ class AppTextPassword extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.obscureText = true,
-    required this.icon,
+    this.icon,
     required this.onPressed,
     this.controller,
   });
@@ -65,7 +65,9 @@ class AppTextPassword extends StatelessWidget {
                       obscureText: obscureText,
                     ),
                   ),
-                  IconButton(icon: icon, onPressed: onPressed),
+                  if (icon != null)
+                    IconButton(
+                        icon: icon ?? Icon(Icons.remove), onPressed: onPressed),
                 ],
               ),
             ),

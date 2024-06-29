@@ -65,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
       width: double.infinity,
       height: 40,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(AppSizes.radius * 1.5),
         shape: BoxShape.rectangle,
         border: Border.all(
           color: AppColors.primaryColor,

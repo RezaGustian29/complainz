@@ -60,6 +60,8 @@ class _LoginViewState extends State<LoginView> {
         children: [
           const AppTextField(
             hinText: 'Username/Email',
+            borderRadius: AppSizes.radius * 1.5,
+            rounded: false,
           ),
           const SizedBox(
             height: AppSizes.padding / 2,
@@ -67,6 +69,8 @@ class _LoginViewState extends State<LoginView> {
           AppTextPassword(
             hinText: 'Password',
             obscureText: _passwordVisible,
+            borderRadius: AppSizes.radius * 1.5,
+            rounded: false,
             icon: Icon(
               _passwordVisible ? Icons.visibility_off : Icons.visibility,
             ),

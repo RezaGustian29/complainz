@@ -12,12 +12,13 @@ class AppColors {
   static const secondaryColor = Color(0xff3C486B);
   static const secondaryTextColor = Color(0xffF0F0F0);
   static const disableTextColor = Color(0xff1D1B20);
-  static const disableButtonColor = Color(0xff1E1D1B20);
-  static const contentColor = Color(0xffFFFCFCFC);
-  static const shadowColor = Color(0xff3F000000);
+  static const disableButtonColor = Color(0xff1e1d1b20);
+  static const contentColor = Color(0xfffffcfcfc);
+  static const shadowColor = Color(0xff3f000000);
   static const dividerColor = Colors.black;
   static const secondary100 = Color(0XFFF0F0F0);
   static const font = Color(0XFF3C486B);
+  static const timelineColor = Color(0xFFF9D949);
 
   /*  static const MaterialColor primarySwatch =
       MaterialColor(0xFF3C486B, <int, Color>{

@@ -1,4 +1,5 @@
 import 'package:complainz/config/app_colors.dart';
+import 'package:complainz/config/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class AppCardHome extends StatelessWidget {
@@ -18,7 +19,7 @@ class AppCardHome extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(AppSizes.radius * 1.5),
           color: AppColors.contentColor,
           boxShadow: const [
             BoxShadow(
@@ -34,7 +35,7 @@ class AppCardHome extends StatelessWidget {
           children: [
             Image.asset(
               image,
-              height: 150,
+              height: 140,
               fit: BoxFit.fill,
             ),
             const Divider(
