@@ -17,6 +17,7 @@ import 'package:complainz/view/splash/splash_view.dart';
 import 'package:complainz/view/status/action_status_view.dart';
 import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
+import 'package:complainz/view/update/update_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'Poppins',
           colorScheme: ColorScheme.fromSeed(
+            // ignore: deprecated_member_use
             background: AppColors.secondary100,
             seedColor: const Color(0xff3C486B),
           ),
@@ -68,6 +70,7 @@ class MyApp extends StatelessWidget {
           '/action-status': (context) => const ActionStatusView(),
           '/history': (context) => const HistoryReportView(),
           '/update-pass': (context) => const UpdatePasswordView(),
+          '/update-profile': (context) => const UpdateProfileView(),
         },
       ),
     );

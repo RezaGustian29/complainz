@@ -220,21 +220,27 @@ class _MyAccountViewState extends State<MyAccountView> {
                   icon: Icons.pin_drop,
                   text: 'Complain Tersimpan',
                   divider: true,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/action-status');
+                  },
                 ),
                 const SizedBox(height: AppSizes.padding / 1.5),
                 AppTextLink(
                   icon: Icons.date_range,
                   text: 'Riwayat Laporan Saya',
                   divider: true,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/history');
+                  },
                 ),
                 const SizedBox(height: AppSizes.padding / 1.5),
                 AppTextLink(
                   icon: Icons.person,
                   text: 'Ubah Profile',
                   divider: true,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/update-profile');
+                  },
                 ),
                 const SizedBox(height: AppSizes.padding / 1.5),
                 AppTextLink(
@@ -302,11 +308,101 @@ class _MyAccountViewState extends State<MyAccountView> {
           AppButton(
             height: 40,
             buttonColor: Colors.red,
-            onTap: () {},
+            onTap: () {
+              _dialogBuilder(context);
+            },
             text: 'Hapus Akun',
+            titleStyle: const TextStyle(
+              color: AppColors.secondaryTextColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.primaryColor,
+          content: const SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                Icon(Icons.delete, size: 50, color: AppColors.timelineColor),
+                SizedBox(height: AppSizes.padding / 2),
+                Text(
+                  'Kamu Yakin Untuk Menghapus Akun?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.secondaryTextColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Ya, Hapus',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.secondaryTextColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Berhasil Dihapus',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.secondaryTextColor,
+                      ),
+                    ),
+                    backgroundColor: Colors.green,
+                    showCloseIcon: true,
+                  ),
+                );
+                //Navigator.of(context).pop();
+                //success(context);
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppSizes.radius * 2),
+                    color: AppColors.timelineColor),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.padding,
+                      vertical: AppSizes.padding / 2),
+                  child: Text(
+                    'Tidak',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
