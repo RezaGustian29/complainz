@@ -38,6 +38,8 @@ dependencies:
   molten_navigationbar_flutter: ^1.0.1
   provider: ^6.1.2
   timeline_tile: ^2.0.0
+  date_format_field: ^0.1.0
+  awesome_bottom_bar: ^1.2.4
   #chips_choice: ^3.0.1
 
 dev_dependencies:

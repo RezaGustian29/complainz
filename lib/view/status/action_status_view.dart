@@ -13,15 +13,9 @@ class ActionStatusView extends StatefulWidget {
 class _ActionStatusViewState extends State<ActionStatusView> {
   bool? isChecked = false;
   final List<Map<String, String>> reports = [
-    {
-      'title': 'Mata Kuliah Banyak Tugas',
-    },
-    {
-      'title': 'Dosen Jarang Mengajar',
-    },
-    {
-      'title': 'Toilet Rusak di Gedung A',
-    },
+    {'title': 'Mata Kuliah Banyak Tugas'},
+    {'title': 'Dosen Jarang Mengajar'},
+    {'title': 'Toilet Rusak di Gedung A'},
   ];
 
   @override
