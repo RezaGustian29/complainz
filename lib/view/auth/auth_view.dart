@@ -31,8 +31,10 @@ class _AuthViewState extends State<AuthView> {
               height: AppSizes.padding,
             ),
             AppButton(
-              onTap: () {},
               text: 'Buat Akun Baru',
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/register');
+              },
             ),
             const SizedBox(
               height: AppSizes.padding / 1.5,
