@@ -18,6 +18,7 @@ import 'package:complainz/view/status/action_status_view.dart';
 import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
+import 'package:complainz/view_model/register_form_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<BottomNavBarProvider>(
             create: (_) => BottomNavBarProvider()),
+        ChangeNotifierProvider<RegisterFormViewModel>(
+            create: (_) => RegisterFormViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(
