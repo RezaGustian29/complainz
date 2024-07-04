@@ -1,67 +1,114 @@
-import 'package:complainz/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:complainz/config/app_colors.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   final double borderRadius;
   final bool rounded;
   final bool enable;
-  final String hinText;
+  final String hintText;
   final double? fontSize;
   final FontWeight? fontWeight;
+  final bool obscureText;
+  final Widget? icon;
+  final Function()? onPressed;
+  final bool suffixIcon;
   final TextEditingController? controller;
+
   const AppTextField({
     super.key,
     this.borderRadius = 4,
     this.rounded = true,
     this.enable = true,
-    required this.hinText,
+    required this.hintText,
     this.fontSize,
     this.fontWeight,
+    this.obscureText = false,
+    this.icon,
+    this.onPressed,
     this.controller,
+    this.suffixIcon = false,
   });
 
   @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  bool _passwordVisible = true;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
+    return TextField(
+      obscureText: widget.obscureText && !_passwordVisible,
+      controller: widget.controller,
+      style: TextStyle(
+        fontSize: widget.fontSize ?? 16,
+        fontWeight: widget.fontWeight ?? FontWeight.w400,
+        color: AppColors.primaryColor,
       ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(rounded ? 4 : borderRadius),
-        shape: BoxShape.rectangle,
-        border: Border.all(
-          color: Colors.black,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: AppColors.secondaryTextColor,
+        hintText: widget.hintText,
+        hintStyle: TextStyle(
+          fontSize: widget.fontSize ?? 14,
+          fontWeight: widget.fontWeight ?? FontWeight.w400,
+          color: AppColors.primaryColor,
         ),
-      ),
-      child: Center(
-        child: TextFormField(
-          controller: controller,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: AppColors.primaryColor,
-          ),
-          decoration: InputDecoration.collapsed(
-            hintText: hinText,
-            hintStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.primaryColor,
-            ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(widget.rounded ? 4 : widget.borderRadius),
+          borderSide: const BorderSide(
+            width: 1,
+            color: Colors.black,
           ),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(widget.rounded ? 4 : widget.borderRadius),
+          borderSide: const BorderSide(
+            width: 1,
+            color: Colors.red,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(widget.rounded ? 4 : widget.borderRadius),
+          borderSide: const BorderSide(
+            width: 1,
+            color: Colors.red,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(widget.rounded ? 4 : widget.borderRadius),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(widget.rounded ? 4 : widget.borderRadius),
+        ),
+        suffixIcon: widget.suffixIcon ? _buildSuffixIcon() : null,
       ),
+    );
+  }
+
+  Widget _buildSuffixIcon() {
+    return IconButton(
+      icon: Icon(
+        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+      ),
+      onPressed: () {
+        setState(() {
+          _passwordVisible = !_passwordVisible;
+        });
+      },
     );
   }
 }
 
 
 /* Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
               shape: BoxShape.rectangle,
@@ -69,101 +116,51 @@ class AppTextField extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Username/Email',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  height: 56,
+                  child: Center(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.primaryColor,
+                            ),
+                            decoration: const InputDecoration.collapsed(
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                            obscureText: _passwordVisible,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-          const SizedBox(
-            height: AppSizes.padding / 2,
-          ),
-          AppTextPassword(
-            hinText: 'Password',
-            obscureText: _passwordVisible,
-            icon: Icon(
-              _passwordVisible ? Icons.visibility_off : Icons.visibility,
-            ),
-            onPressed: () {
-              setState(() {
-                _passwordVisible = !_passwordVisible;
-              });
-            },
-          ), */
-
-
-
-/* Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              shape: BoxShape.rectangle,
-              border: Border.all(
-                color: Colors.black,
-              ),
-            ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Username/Email',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ), */
-
-
-/* Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              shape: BoxShape.rectangle,
-              border: Border.all(
-                color: Colors.black,
-              ),
-            ),
-            child: Center(
-              child: TextFormField(
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.primaryColor,
-                ),
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Username',
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ), */
+ */
