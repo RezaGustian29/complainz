@@ -1,7 +1,7 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_textpassword.dart';
+import 'package:complainz/widgets/app_textfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:flutter/material.dart';
 
@@ -110,8 +110,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   Widget form() {
     return Column(
       children: [
-        AppTextPassword(
-          hinText: 'Name',
+        AppTextField(
+          hintText: 'Name',
           obscureText: _passwordVisible,
           rounded: false,
           borderRadius: AppSizes.radius * 1.5,
@@ -127,8 +127,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         const SizedBox(
           height: AppSizes.padding / 2,
         ),
-        AppTextPassword(
-          hinText: 'No WhatSapp',
+        AppTextField(
+          hintText: 'No WhatSapp',
           obscureText: _passwordVisible,
           rounded: false,
           borderRadius: AppSizes.radius * 1.5,

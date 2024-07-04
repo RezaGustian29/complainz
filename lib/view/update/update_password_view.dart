@@ -2,7 +2,7 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/widgets/app_back_button.dart';
 import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_textpassword.dart';
+import 'package:complainz/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
 
 class UpdatePasswordView extends StatefulWidget {
@@ -46,8 +46,8 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
   Widget form() {
     return Column(
       children: [
-        AppTextPassword(
-          hinText: 'Password',
+        AppTextField(
+          hintText: 'Password',
           obscureText: _passwordVisible,
           rounded: false,
           borderRadius: AppSizes.radius * 1.5,
@@ -63,8 +63,8 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
         const SizedBox(
           height: AppSizes.padding / 2,
         ),
-        AppTextPassword(
-          hinText: 'Ulangi Password',
+        AppTextField(
+          hintText: 'Ulangi Password',
           obscureText: _passwordVisible,
           rounded: false,
           borderRadius: AppSizes.radius * 1.5,

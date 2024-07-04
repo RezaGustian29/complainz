@@ -13,6 +13,7 @@ class AppButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final BorderSide? border;
   final TextStyle? titleStyle;
+  final Color? color;
   const AppButton(
       {super.key,
       this.width,
@@ -24,6 +25,7 @@ class AppButton extends StatelessWidget {
       this.fontSize,
       this.fontWeight,
       this.border,
+      this.color = Colors.white,
       this.titleStyle});
 
   @override
@@ -44,7 +46,7 @@ class AppButton extends StatelessWidget {
           text,
           style: titleStyle ??
               TextStyle(
-                color: Colors.white,
+                color: color ?? Colors.white,
                 fontSize: fontSize,
                 fontWeight: fontWeight,
               ),
