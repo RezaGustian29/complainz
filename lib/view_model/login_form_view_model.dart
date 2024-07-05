@@ -4,6 +4,7 @@ import 'package:complainz/widgets/app_dialog.dart';
 import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:complainz/widgets/console_log.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormViewModel extends ChangeNotifier {
   TextEditingController usernameController = TextEditingController();

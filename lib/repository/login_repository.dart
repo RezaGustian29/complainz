@@ -1,6 +1,7 @@
 import 'package:complainz/config/app_url.dart';
 import 'package:complainz/widgets/console_log.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginRepository {
   Dio dio = Dio();
@@ -22,6 +23,8 @@ class LoginRepository {
       );
 
       if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', response.data['user']['token']);
         cl('[onLogin].success = $response');
         return null; // Login berhasil
       } else {

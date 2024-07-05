@@ -1,5 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/view/report/report_view.dart';
 import 'package:complainz/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 
@@ -103,30 +104,44 @@ class _HomeViewState extends State<HomeView> {
         ),
         children: [
           AppCardHome(
-            onTap: () {
-              Navigator.pushNamed(context, '/report');
-            },
             image: 'assets/images/images_staf.png',
             text: 'Dosen dan Staff Akademik',
+            onTap: () {
+              //Navigator.pushNamed(context, '/report');
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const ReportView(
+                        category: "1",
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(
+                        begin: const Offset(2, 0),
+                        end: Offset.zero,
+                      );
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    }),
+              );
+            },
           ),
           AppCardHome(
-            onTap: () {
-              Navigator.pushNamed(context, '/report');
-            },
+            onTap: () {},
             image: 'assets/images/images_sarana.png',
             text: 'Sarana dan Prasarana',
           ),
           AppCardHome(
-            onTap: () {
-              Navigator.pushNamed(context, '/report');
-            },
+            onTap: () {},
             image: 'assets/images/images_kuliah.png',
             text: 'Sistem \nPerkuliahan',
           ),
           AppCardHome(
-            onTap: () {
-              Navigator.pushNamed(context, '/report');
-            },
+            onTap: () {},
             image: 'assets/images/images_ormawa.png',
             text: 'Organisasi Mahasiswa',
           ),

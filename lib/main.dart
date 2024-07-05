@@ -18,6 +18,7 @@ import 'package:complainz/view/status/action_status_view.dart';
 import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
+import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/view_model/login_form_view_model.dart';
 import 'package:complainz/view_model/register_form_view_model.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
             create: (_) => RegisterFormViewModel()),
         ChangeNotifierProvider<LoginFormViewModel>(
             create: (_) => LoginFormViewModel()),
+        ChangeNotifierProvider(create: (_) => GetAllReportViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -62,7 +64,9 @@ class MyApp extends StatelessWidget {
           '/register': (context) => const RegisterView(),
           '/bottom-navbar': (context) => const BottomNavbar(),
           '/home': (context) => const HomeView(),
-          '/report': (context) => const ReportView(),
+          '/report': (context) => const ReportView(
+                category: '',
+              ),
           '/create-report': (context) => const CreateReportListView(),
           '/news': (context) => const NewsView(),
           '/detail-news': (context) => const DetailNewsView(),
