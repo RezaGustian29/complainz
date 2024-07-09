@@ -2,9 +2,15 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/report/components/report_card_tile.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
+import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_progres_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+List<String> list = <String>[
+  'Terbaru',
+  'Terlama',
+];
 
 class ReportView extends StatefulWidget {
   final String category;
@@ -18,10 +24,14 @@ class ReportView extends StatefulWidget {
   State<ReportView> createState() => _ReportViewState();
 }
 
+//late String dropdownValue;
+String dropdownValue = list.first;
+
 class _ReportViewState extends State<ReportView> {
   @override
   void initState() {
     super.initState();
+    dropdownValue = list.first;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<GetAllReportViewModel>(context, listen: false)
           .getAllReporttt(category: widget.category, sort: "desc");
@@ -30,13 +40,42 @@ class _ReportViewState extends State<ReportView> {
 
   @override
   Widget build(BuildContext context) {
-    //final getAllReportViewModel = Provider.of<GetAllReportViewModel>(context);
+    ////
     return Scaffold(
+      appBar: appBar(),
+      body: NestedScrollView(
+        // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
+        headerSliverBuilder: (BuildContext, context) => [
+          SliverAppBar(
+            pinned: true,
+            automaticallyImplyLeading: false,
+            expandedHeight: AppSizes.padding,
+            toolbarHeight: AppSizes.padding * 3,
+            flexibleSpace: Padding(
+              padding: const EdgeInsets.only(right: AppSizes.padding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  dropdown(),
+                ],
+              ),
+            ),
+          ),
+        ],
+        body: content(),
+      ),
+    );
+  }
+
+  /* @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              header(),
+              dropdown(),
               const SizedBox(height: AppSizes.padding),
               content(),
             ],
@@ -44,33 +83,76 @@ class _ReportViewState extends State<ReportView> {
         ),
       ),
     );
+  } */
+
+  AppAppbar appBar() {
+    return const AppAppbar(
+      title: 'Laporan',
+    );
   }
 
-  Widget header() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Image.asset(
-              'assets/icons/icons_arrow_back.png',
-              width: 40,
-            ),
+  Widget dropdown() {
+    return DropdownMenu<String>(
+      initialSelection: dropdownValue,
+      onSelected: (String? value) {
+        setState(() {
+          dropdownValue = value!;
+
+          if (dropdownValue == 'Terbaru') {
+            setState(() {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Provider.of<GetAllReportViewModel>(context, listen: false)
+                    .getAllReporttt(category: widget.category, sort: "desc");
+              });
+            });
+          }
+          if (dropdownValue == 'Terlama') {
+            setState(() {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Provider.of<GetAllReportViewModel>(context, listen: false)
+                    .getAllReporttt(category: widget.category, sort: "asc");
+              });
+            });
+          }
+        });
+      },
+      textStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: AppColors.primaryColor), // Adjust text size if needed
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        constraints: const BoxConstraints.tightFor(
+            height: 40), // Set your desired height here
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: AppColors.primaryColor,
+            width: 1,
           ),
-          const Text(
-            'Laporan',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryColor,
-            ),
-          ),
-        ],
+        ),
       ),
+      menuStyle: MenuStyle(
+        maximumSize: WidgetStateProperty.all(
+            const Size.fromHeight(200)), // Limit menu height if needed
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+      ),
+      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
+        return DropdownMenuEntry(
+          value: value,
+          label: value,
+          style: ButtonStyle(
+            textStyle: WidgetStateProperty.all(
+              const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryColor),
+            ),
+            padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+          ),
+        );
+      }).toList(),
     );
   }
 

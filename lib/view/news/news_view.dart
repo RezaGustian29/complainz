@@ -2,9 +2,7 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/widgets/app_back_button.dart';
 import 'package:complainz/widgets/app_card_news.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({super.key});

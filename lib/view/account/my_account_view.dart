@@ -3,7 +3,6 @@ import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_text_link.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MyAccountView extends StatefulWidget {
   const MyAccountView({super.key});

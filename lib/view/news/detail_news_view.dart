@@ -49,6 +49,7 @@ class _DetailNewsViewState extends State<DetailNewsView> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: AppSizes.padding / 2),
+        // ignore: avoid_unnecessary_containers
         Container(
           child: const Center(
             child: Column(

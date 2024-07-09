@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:complainz/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 

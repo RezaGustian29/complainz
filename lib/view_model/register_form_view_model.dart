@@ -2,7 +2,6 @@ import 'package:complainz/view/login/login_view.dart';
 import 'package:complainz/widgets/app_dialog.dart';
 import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:complainz/widgets/console_log.dart';
-import 'package:flutter/foundation.dart';
 import 'package:complainz/repository/register_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +12,16 @@ class RegisterFormViewModel extends ChangeNotifier {
   //final dateBirthController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   Enum? register;
   String errorMessage = '';
