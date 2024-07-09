@@ -4,7 +4,6 @@ import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_card_status.dart';
 import 'package:complainz/widgets/app_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class StatusComplaintView extends StatefulWidget {
   const StatusComplaintView({super.key});

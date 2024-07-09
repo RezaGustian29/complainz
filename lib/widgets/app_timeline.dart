@@ -2,6 +2,7 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+// ignore: must_be_immutable
 class AppTimeline extends StatelessWidget {
   bool isFirst;
   bool isLast;

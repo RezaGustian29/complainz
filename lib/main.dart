@@ -18,6 +18,7 @@ import 'package:complainz/view/status/action_status_view.dart';
 import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
+import 'package:complainz/view_model/create_report_view_model.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/view_model/login_form_view_model.dart';
 import 'package:complainz/view_model/register_form_view_model.dart';
@@ -35,13 +36,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BottomNavBarProvider>(
-            create: (_) => BottomNavBarProvider()),
-        ChangeNotifierProvider<RegisterFormViewModel>(
-            create: (_) => RegisterFormViewModel()),
-        ChangeNotifierProvider<LoginFormViewModel>(
-            create: (_) => LoginFormViewModel()),
+        ChangeNotifierProvider(create: (_) => BottomNavBarProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterFormViewModel()),
+        ChangeNotifierProvider(create: (_) => LoginFormViewModel()),
         ChangeNotifierProvider(create: (_) => GetAllReportViewModel()),
+        ChangeNotifierProvider(create: (_) => CreateReportViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -71,8 +70,8 @@ class MyApp extends StatelessWidget {
           '/news': (context) => const NewsView(),
           '/detail-news': (context) => const DetailNewsView(),
           '/create-complaint': (context) => const CreateReportComplaintView(
-                title: '',
-                child: null,
+              /*  title: '',
+                child: null, */
               ),
           '/create-aspiration': (context) => const CreateAspirationView(),
           '/status': (context) => const StatusComplaintView(),

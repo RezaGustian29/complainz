@@ -1,9 +1,7 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/view/home/home_view.dart';
 import 'package:complainz/view_model/register_form_view_model.dart';
 import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_dialog.dart';
 import 'package:complainz/widgets/app_textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

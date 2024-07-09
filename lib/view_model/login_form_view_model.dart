@@ -4,11 +4,17 @@ import 'package:complainz/widgets/app_dialog.dart';
 import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:complainz/widgets/console_log.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormViewModel extends ChangeNotifier {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   Future<void> onLogin(NavigatorState navigator, BuildContext context) async {
     if (usernameController.text.isEmpty || passwordController.text.isEmpty) {

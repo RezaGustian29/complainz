@@ -27,7 +27,7 @@ class AppReportCardTile extends StatelessWidget {
       child: Container(
         width: double.infinity,
         //height: 337,
-        height: 250,
+        //height: 250,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color: AppColors.contentColor,
@@ -45,6 +45,8 @@ class AppReportCardTile extends StatelessWidget {
               vertical: AppSizes.radius * 2.5,
               horizontal: AppSizes.radius * 2.5),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,21 +99,22 @@ class AppReportCardTile extends StatelessWidget {
                   top: 10,
                 ),
                 width: double.infinity,
-                height: 63,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
-                  color: AppColors.secondaryTextColor,
+                  color: Colors.amber,
                 ),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize
+                        .min, // This makes the column take the minimum space required
                     children: [
                       const Text(
                         'Laporan',
@@ -133,10 +136,10 @@ class AppReportCardTile extends StatelessWidget {
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      /*  Image.asset(
-                                    'assets/images/images_logo.png',
-                                    width: 50,
-                                  ), */
+                      Image.asset(
+                        'assets/images/images_logo.png',
+                        width: 50,
+                      ),
                     ],
                   ),
                 ),
@@ -146,7 +149,7 @@ class AppReportCardTile extends StatelessWidget {
                     horizontal: AppSizes.padding,
                     vertical: AppSizes.padding / 2),
                 width: double.infinity,
-                height: 82,
+                //height: 82,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30),
@@ -156,6 +159,7 @@ class AppReportCardTile extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
                       'Tindak Lanjut',
