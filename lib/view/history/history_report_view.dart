@@ -1,7 +1,9 @@
+import 'package:complainz/view/history/components/history_report_tile.dart';
+import 'package:complainz/view_model/get_report_status_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_back_button.dart';
+import 'package:provider/provider.dart';
 
 class HistoryReportView extends StatefulWidget {
   const HistoryReportView({super.key});
@@ -11,6 +13,15 @@ class HistoryReportView extends StatefulWidget {
 }
 
 class _HistoryReportViewState extends State<HistoryReportView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<GetReportStatusViewModel>(context, listen: false)
+          .getResultReportStatus(status: "All");
+    });
+  }
+
   final List<Map<String, String>> reports = [
     {'title': 'Mata Kuliah Banyak Tugas', 'description': 'Deskripsi laporan 1'},
     {'title': 'Dosen Jarang Mengajar', 'description': 'Deskripsi laporan 2'},
@@ -22,13 +33,26 @@ class _HistoryReportViewState extends State<HistoryReportView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: AppSizes.padding),
+            child: Text(
+              'Riwayat Laporan',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryColor,
+              ),
+            ),
+          )
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
           child: Column(
             children: [
-              const AppBackButton(text: 'Riwayat Laporan'),
-              const SizedBox(height: AppSizes.padding),
               Expanded(child: body()),
               const SizedBox(height: AppSizes.padding),
             ],
@@ -39,95 +63,56 @@ class _HistoryReportViewState extends State<HistoryReportView> {
   }
 
   Widget body() {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.padding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.padding),
-        color: AppColors.timelineColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Laporan Saya',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
+    return Consumer<GetReportStatusViewModel>(builder: (context, model, _) {
+      return Container(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.padding),
+          color: AppColors.timelineColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Laporan Saya',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
-                ),
-                Text(
-                  'Cabut',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
+                  Text(
+                    'Cabut',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const Divider(color: AppColors.primaryColor),
-          Expanded(
-            child: ListView.builder(
-              itemCount: reports.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppSizes.padding / 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '${index + 1}. ${reports[index]['title']}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(AppSizes.radius * 1.5),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSizes.padding,
-                            vertical: AppSizes.padding / 2,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/status');
-                        },
-                        child: const Text(
-                          'Detail',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.secondaryTextColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            const Divider(color: AppColors.primaryColor),
+            Expanded(
+              child: ListView.builder(
+                itemCount: model.reportStatus.length,
+                itemBuilder: (context, i) {
+                  final result = model.reportStatus[i];
+                  return HistoryReportTile(
+                    description: "${i + 1}. ${result.description}",
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
 

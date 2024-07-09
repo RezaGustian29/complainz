@@ -8,4 +8,6 @@ class AppUrl {
   static const String createReport = "$baseUrl/complaintz/complaint";
   static const String getReportCategory =
       "$baseUrl/complaintz/complaint/category";
+  static const String getReportStatus =
+      "$baseUrl /complaintz/complaint?status=";
 }
