@@ -1,5 +1,5 @@
 class AppUrl {
-  static const baseUrl = "http://192.168.1.48:8080";
+  static const baseUrl = "http://192.168.1.45:8080";
   //static const baseUrl = "http://192.168.1.39:8080";
   //static const baseUrl = "localhost:8080";
   static const String register = "$baseUrl/register/user";
@@ -10,4 +10,5 @@ class AppUrl {
       "$baseUrl/complaintz/complaint/category";
   static const String getReportStatus =
       "$baseUrl /complaintz/complaint?status=";
+  static const String getUserProfile = "$baseUrl /complaintz/user";
 }
