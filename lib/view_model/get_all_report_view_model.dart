@@ -4,8 +4,8 @@ import 'package:complainz/widgets/console_log.dart';
 import 'package:flutter/material.dart';
 
 class GetAllReportViewModel extends ChangeNotifier {
-  List<GetAllReportModel> getAllReportt = [];
-  List<GetAllReportModel> get getAllReport => getAllReportt;
+  List<GetAllReportModel> _getAllReportt = [];
+  List<GetAllReportModel> get getAllReport => _getAllReportt;
 
   void initView(NavigatorState navigator) {
     //getAllReportt(navigator, category: '', sort: null);
@@ -14,7 +14,7 @@ class GetAllReportViewModel extends ChangeNotifier {
   Future<void> getAllReporttt({required String category, required sort}) async {
     try {
       GetAllReportRepository allReport = GetAllReportRepository();
-      getAllReportt =
+      _getAllReportt =
           await allReport.getAllReporttt(category: category, sort: sort);
       cl('[getAllReport].allreport: $allReport');
       notifyListeners();

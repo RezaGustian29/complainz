@@ -131,19 +131,82 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
           AppCardHome(
-            onTap: () {},
             image: 'assets/images/images_sarana.png',
             text: 'Sarana dan Prasarana',
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const ReportView(
+                        category: "2",
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(
+                        begin: const Offset(2, 0),
+                        end: Offset.zero,
+                      );
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    }),
+              );
+            },
           ),
           AppCardHome(
-            onTap: () {},
             image: 'assets/images/images_kuliah.png',
             text: 'Sistem \nPerkuliahan',
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const ReportView(
+                        category: "3",
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(
+                        begin: const Offset(2, 0),
+                        end: Offset.zero,
+                      );
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    }),
+              );
+            },
           ),
           AppCardHome(
-            onTap: () {},
             image: 'assets/images/images_ormawa.png',
             text: 'Organisasi Mahasiswa',
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const ReportView(
+                        category: "4",
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final tween = Tween(
+                        begin: const Offset(2, 0),
+                        end: Offset.zero,
+                      );
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    }),
+              );
+            },
           ),
         ],
       ),

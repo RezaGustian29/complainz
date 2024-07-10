@@ -3,7 +3,7 @@ import 'package:complainz/config/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class AppReportCardTile extends StatelessWidget {
-  final String photoUrl;
+  final String? photoUrl;
   final String username;
   final String fullname;
   final String createdAt;
@@ -11,7 +11,7 @@ class AppReportCardTile extends StatelessWidget {
   final String fedback;
   const AppReportCardTile({
     super.key,
-    required this.photoUrl,
+    this.photoUrl,
     required this.username,
     required this.fullname,
     required this.createdAt,
@@ -51,10 +51,30 @@ class AppReportCardTile extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    photoUrl,
-                    width: 40,
-                  ),
+                  if (photoUrl?.isNotEmpty == true)
+                    Container(
+                      decoration: const ShapeDecoration(
+                        shape: OvalBorder(
+                          side: BorderSide(
+                            width: 1.5,
+                            strokeAlign: BorderSide.strokeAlignOutside,
+                            color: Color(0xFF636D89),
+                          ),
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: Image.network(
+                          photoUrl!,
+                          width: 40,
+                          height:
+                              40, // Tambahkan height untuk memastikan bentuk bulat
+                          fit: BoxFit
+                              .cover, // Gunakan BoxFit.cover untuk mengisi area dengan baik
+                        ),
+                      ),
+                    ),
+                  if (photoUrl?.isEmpty == true)
+                    Image.asset('assets/images/images_profile.png', width: 40),
                   const SizedBox(
                     width: 8,
                   ),

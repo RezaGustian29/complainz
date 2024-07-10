@@ -32,10 +32,12 @@ class _ReportViewState extends State<ReportView> {
   void initState() {
     super.initState();
     dropdownValue = list.first;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GetAllReportViewModel>(context, listen: false)
-          .getAllReporttt(category: widget.category, sort: "desc");
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<GetAllReportViewModel>(context, listen: false)
+            .getAllReporttt(category: widget.category, sort: "desc");
+      },
+    );
   }
 
   @override
@@ -137,50 +139,60 @@ class _ReportViewState extends State<ReportView> {
             const Size.fromHeight(200)), // Limit menu height if needed
         padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
-      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
-        return DropdownMenuEntry(
-          value: value,
-          label: value,
-          style: ButtonStyle(
-            textStyle: WidgetStateProperty.all(
-              const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor),
+      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>(
+        (String value) {
+          return DropdownMenuEntry(
+            value: value,
+            label: value,
+            style: ButtonStyle(
+              textStyle: WidgetStateProperty.all(
+                const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor),
+              ),
+              padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
             ),
-            padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-          ),
-        );
-      }).toList(),
+          );
+        },
+      ).toList(),
     );
   }
 
   Widget content() {
-    return Consumer<GetAllReportViewModel>(builder: (context, model, _) {
-      // ignore: unnecessary_null_comparison
-      if (model.getAllReportt.isEmpty) {
-        return const Center(
-          child: AppProgresIndicator(),
-        );
-      }
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        itemCount: model.getAllReport.length,
-        itemBuilder: (context, i) {
-          final result = model.getAllReport[i];
-          return AppReportCardTile(
-            photoUrl: result.photoProfile ?? 'assets/images/images_profile.png',
-            fullname: result.fullName,
-            username: "@${result.username}",
-            createdAt: result.createdAt,
-            description: result.description,
-            fedback: result.feedback ?? '',
+    return Consumer<GetAllReportViewModel>(
+      builder: (context, model, _) {
+        // ignore: unnecessary_null_comparison
+        if (model.getAllReport == null) {
+          return const Center(
+            child: AppProgresIndicator(),
           );
-        },
-      );
-    });
+        }
+
+        if (model.getAllReport.isEmpty) {
+          return const Center(
+            child: Text('Kosong'),
+          );
+        }
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          itemCount: model.getAllReport.length,
+          itemBuilder: (context, i) {
+            final result = model.getAllReport[i];
+            return AppReportCardTile(
+              photoUrl: result.photoProfile,
+              fullname: result.fullName,
+              username: "@${result.username}",
+              createdAt: result.createdAt,
+              description: result.description,
+              fedback: result.feedback ?? '',
+            );
+          },
+        );
+      },
+    );
   }
 /* 
   Container(

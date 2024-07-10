@@ -1,8 +1,12 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/view_model/get_user_profile_view_model.dart';
 import 'package:complainz/widgets/app_button.dart';
+import 'package:complainz/widgets/app_progres_indicator.dart';
 import 'package:complainz/widgets/app_text_link.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MyAccountView extends StatefulWidget {
   const MyAccountView({super.key});
@@ -12,6 +16,15 @@ class MyAccountView extends StatefulWidget {
 }
 
 class _MyAccountViewState extends State<MyAccountView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<GetUserProfileViewModel>(context, listen: false)
+          .getResultUserProfile();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,162 +48,221 @@ class _MyAccountViewState extends State<MyAccountView> {
   }
 
   Widget pictureProfile() {
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            width: 145,
-            height: 145,
-            decoration: const ShapeDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/images_ormawa.png"),
-                fit: BoxFit.fill,
-              ),
-              shape: OvalBorder(
-                side: BorderSide(
-                  width: 5,
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                  color: Color(0xFF636D89),
+    return Consumer<GetUserProfileViewModel>(builder: (context, model, _) {
+      if (model.userProfile == null) {
+        return const Center(
+          child: AppProgresIndicator(),
+        );
+      }
+      final result = model.userProfile;
+      return Center(
+        child: Column(
+          children: [
+            Container(
+              width: 145,
+              height: 145,
+              decoration: ShapeDecoration(
+                image: DecorationImage(
+                  image: result!.photo_profile != null &&
+                          result.photo_profile!.isNotEmpty
+                      ? NetworkImage(result.photo_profile!) as ImageProvider
+                      : const AssetImage('assets/images/images_ormawa.png')
+                          as ImageProvider,
+                  fit: BoxFit.fill,
+                ),
+                shape: const OvalBorder(
+                  side: BorderSide(
+                    width: 5,
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                    color: Color(0xFF636D89),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: AppSizes.padding / 2),
-          const Text(
-            'John Doe',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryColor,
-            ),
-          )
-        ],
-      ),
-    );
+            const SizedBox(height: AppSizes.padding / 2),
+            Text(
+              result.full_name,
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryColor,
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 
-  Widget cardInfo() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-      child: Container(
-        padding: const EdgeInsets.all(AppSizes.padding / 2),
-        width: double.infinity,
-        height: 72,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.radius * 2),
-          color: AppColors.contentColor,
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.transparent,
-              blurRadius: 8,
-              offset: Offset(0, 0),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  /* Widget pictureProfile() {
+    return Consumer<GetUserProfileViewModel>(builder: (context, model, _) {
+      if (model.userProfile.isEmpty) {
+        return const Center(
+          child: AppProgresIndicator(),
+        );
+      }
+      final result = model.userProfile;
+      return Center(
+        child: Column(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '20',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
+            Container(
+              width: 145,
+              height: 145,
+              decoration: const ShapeDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/images_ormawa.png"),
+                  fit: BoxFit.fill,
+                ),
+                shape: OvalBorder(
+                  side: BorderSide(
+                    width: 5,
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                    color: Color(0xFF636D89),
                   ),
                 ),
-                Text(
-                  'Laporan',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
+              ),
             ),
-            VerticalDivider(
-              color: AppColors.primaryColor,
-              thickness: 1.5,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '2',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  'Diterima',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            VerticalDivider(
-              color: AppColors.primaryColor,
-              thickness: 1.5,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '1',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  'Diproses',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
-            ),
-            VerticalDivider(
-              color: AppColors.primaryColor,
-              thickness: 1.5,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '2',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  'Dijawab',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: AppSizes.padding / 2),
+            Text(
+              result,
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryColor,
+              ),
+            )
           ],
         ),
-      ),
-    );
+      );
+    });
+  } */
+
+  Widget cardInfo() {
+    return Consumer<GetUserProfileViewModel>(builder: (context, model, _) {
+      final result = model.userProfile;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+        child: Container(
+          padding: const EdgeInsets.all(AppSizes.padding / 2),
+          width: double.infinity,
+          height: 72,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppSizes.radius * 2),
+            color: AppColors.contentColor,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.transparent,
+                blurRadius: 8,
+                offset: Offset(0, 0),
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    result?.laporan.toString() ?? '0',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Text(
+                    'Laporan',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              const VerticalDivider(
+                color: AppColors.primaryColor,
+                thickness: 1.5,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    result?.pending.toString() ?? '0',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Text(
+                    'Diterima',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              const VerticalDivider(
+                color: AppColors.primaryColor,
+                thickness: 1.5,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    result?.proccess.toString() ?? '0',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Text(
+                    'Diproses',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              const VerticalDivider(
+                color: AppColors.primaryColor,
+                thickness: 1.5,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    result?.resolved.toString() ?? '0',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Text(
+                    'Dijawab',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   Widget settingCard() {
