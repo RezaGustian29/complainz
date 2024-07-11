@@ -4,7 +4,6 @@ import 'package:complainz/view_model/create_report_view_model.dart';
 import 'package:complainz/widgets/app_back_button.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_snackbar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

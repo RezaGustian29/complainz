@@ -11,7 +11,6 @@ class GetUserProfileRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? getToken = prefs.getString('token');
       prefs.containsKey('token');
-      print(getToken);
       var response = await dio.get(
         AppUrl.getUserProfile,
         options: Options(

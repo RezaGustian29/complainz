@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 /* GetUserProfileModel getUserProfileModelFromJson(String str) =>
     GetUserProfileModel.fromJson(json.decode(str));
 
@@ -8,7 +6,9 @@ String getUserProfileModelToJson(GetUserProfileModel data) =>
 
 class GetUserProfileModel {
   int id;
+  // ignore: non_constant_identifier_names
   String? photo_profile;
+  // ignore: non_constant_identifier_names
   String full_name;
   int laporan;
   int pending;
@@ -17,7 +17,9 @@ class GetUserProfileModel {
 
   GetUserProfileModel({
     required this.id,
+    // ignore: non_constant_identifier_names
     this.photo_profile,
+    // ignore: non_constant_identifier_names
     required this.full_name,
     required this.laporan,
     required this.pending,

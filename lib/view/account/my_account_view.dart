@@ -5,7 +5,6 @@ import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_progres_indicator.dart';
 import 'package:complainz/widgets/app_text_link.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountView extends StatefulWidget {
