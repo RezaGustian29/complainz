@@ -18,6 +18,7 @@ import 'package:complainz/view/status/action_status_view.dart';
 import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
+import 'package:complainz/view_model/create_aspiration_view_model.dart';
 import 'package:complainz/view_model/create_report_view_model.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/view_model/get_report_status_view_model.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CreateReportViewModel()),
         ChangeNotifierProvider(create: (_) => GetReportStatusViewModel()),
         ChangeNotifierProvider(create: (_) => GetUserProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => CreateAspirationViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(

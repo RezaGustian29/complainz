@@ -1,8 +1,10 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_back_button.dart';
+import 'package:complainz/view_model/create_aspiration_view_model.dart';
+import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CreateAspirationView extends StatefulWidget {
   const CreateAspirationView({super.key});
@@ -11,7 +13,8 @@ class CreateAspirationView extends StatefulWidget {
   State<CreateAspirationView> createState() => _CreateAspirationViewState();
 }
 
-class _CreateAspirationViewState extends State<CreateAspirationView> {
+class _CreateAspirationViewState extends State<CreateAspirationView>
+    with WidgetsBindingObserver {
   int? selectedTag; // Variabel untuk menyimpan tag yang dipilih
   int? selectedOption;
 
@@ -23,9 +26,44 @@ class _CreateAspirationViewState extends State<CreateAspirationView> {
     {'label': 'Mahasiswa', 'value': 5},
   ];
 
+  //untuk reset form ketika switch ke halaman lain dan kembali lagi form kosong
+  CreateAspirationViewModel? _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    //_viewModel = Provider.of<CreateAspirationViewModel>(context, listen: false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _viewModel ??=
+        Provider.of<CreateAspirationViewModel>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _viewModel?.resetFormWithoutNotify();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      _viewModel?.resetFormWithoutNotify();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppAppbar(
+        title: 'Aspirasi',
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           reverse: true,
@@ -34,10 +72,6 @@ class _CreateAspirationViewState extends State<CreateAspirationView> {
                 horizontal: AppSizes.padding, vertical: AppSizes.padding),
             child: Column(
               children: [
-                const AppBackButton(
-                    text: 'Aspirasi',
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700),
                 const SizedBox(height: AppSizes.padding),
                 form(),
                 complaintButton(),
@@ -51,161 +85,153 @@ class _CreateAspirationViewState extends State<CreateAspirationView> {
   }
 
   Widget form() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Masukkan Pesan Anda',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        TextFormField(
-          minLines: 6,
-          maxLines: null,
-          keyboardType: TextInputType.multiline,
-          decoration: InputDecoration(
-            hintText: "Ketik disini...",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
+    return Consumer<CreateAspirationViewModel>(builder: (context, model, _) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Masukkan Pesan Anda',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryColor,
             ),
           ),
-        ),
-        const SizedBox(height: AppSizes.padding),
-        const Text(
-          'Pilih Kategori',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryColor,
+          TextFormField(
+            controller: model.aspirationController,
+            minLines: 6,
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              hintText: "Ketik disini...",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
           ),
-        ),
-        tagsWidget(),
-        const SizedBox(height: AppSizes.padding),
-        const Text(
-          'Jenis Laporan',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryColor,
+          const SizedBox(height: AppSizes.padding),
+          const Text(
+            'Pilih Kategori',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryColor,
+            ),
           ),
-        ),
-        options(),
-      ],
-    );
+          tagsWidget(),
+          const SizedBox(height: AppSizes.padding),
+          const Text(
+            'Jenis Aspirasi',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          options(),
+        ],
+      );
+    });
   }
 
   Widget tagsWidget() {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.padding),
-      width: double.infinity,
-      height: 225,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: AppColors.contentColor,
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadowColor,
-            blurRadius: 8,
-            offset: Offset(0, 0),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Center(
-        child: Wrap(
-          spacing: 8.0, // jarak horizontal antara chips
-          runSpacing: 0.0,
-          children: tags.map((tag) {
-            return ChoiceChip(
-              label: Text(tag['label']),
-              labelStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-                color: selectedTag == tag['value']
-                    ? Colors.white
-                    : AppColors.primaryColor,
-              ),
-              showCheckmark: false,
-              selected: selectedTag == tag['value'],
-              selectedColor: AppColors.primaryColor,
-              onSelected: (bool selected) {
-                setState(() {
-                  selectedTag = selected ? tag['value'] : null;
-                });
-              },
-            );
-          }).toList(),
+    return Consumer<CreateAspirationViewModel>(builder: (context, model, _) {
+      return Container(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        width: double.infinity,
+        height: 225,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: AppColors.contentColor,
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.shadowColor,
+              blurRadius: 8,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            ),
+          ],
         ),
-      ),
-    );
+        child: Center(
+          child: Wrap(
+            spacing: 8.0, // jarak horizontal antara chips
+            runSpacing: 0.0,
+            children: tags.map((tag) {
+              return ChoiceChip(
+                label: Text(tag['label']),
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: model.selectedTag == tag['value']
+                      ? Colors.white
+                      : AppColors.primaryColor,
+                ),
+                showCheckmark: false,
+                selected: model.selectedTag == tag['value'],
+                selectedColor: AppColors.primaryColor,
+                onSelected: (bool selected) {
+                  setState(() {
+                    model.updateSelectedTag(selected ? tag['value'] : null);
+                  });
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    });
   }
 
   Widget options() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RadioListTile<int>(
-          title: const Text('Umum'),
-          value: 1,
-          groupValue: selectedOption,
-          onChanged: (int? value) {
-            setState(() {
-              selectedOption = value!;
-            });
-          },
-        ),
-        RadioListTile<int>(
-          title: const Text('Rahasia'),
-          value: 2,
-          groupValue: selectedOption,
-          onChanged: (int? value) {
-            setState(() {
-              selectedOption = value!;
-            });
-          },
-        ),
-        /* RadioListTile(
-          title: const Text('Umum'),
-          value: 1,
-          groupValue: selectedOption,
-          onChanged: (value) {
-            setState(
-              () {
-                selectedOption = value!;
-              },
-            );
-          },
-        ),
-        RadioListTile(
-          title: const Text('Rahasia'),
-          value: 2,
-          groupValue: selectedOption,
-          onChanged: (value) {
-            setState(
-              () {
-                selectedOption = value!;
-              },
-            );
-          },
-        ), */
-      ],
-    );
+    return Consumer<CreateAspirationViewModel>(builder: (context, model, _) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RadioListTile<bool?>(
+            title: const Text('Umum'),
+            value: true,
+            groupValue: model.isPublic,
+            onChanged: (bool? value) {
+              setState(() {
+                model.updateSelecteIsPublic(
+                    model.isPublic == true ? null : value);
+              });
+            },
+          ),
+          RadioListTile<bool?>(
+            title: const Text('Rahasia'),
+            value: false,
+            groupValue: model.isPublic,
+            onChanged: (bool? value) {
+              setState(() {
+                model.updateSelecteIsPublic(
+                    model.isPublic == false ? null : value);
+              });
+            },
+          ),
+        ],
+      );
+    });
   }
 
   Widget complaintButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSizes.padding),
-      child: AppButton(
-        onTap: () {},
-        text: 'Kirim',
-        height: 45,
-        fontWeight: FontWeight.w700,
-      ),
-    );
+    return Consumer<CreateAspirationViewModel>(builder: (context, model, _) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.padding),
+        child: AppButton(
+          onTap: () async {
+            FocusScope.of(context).unfocus();
+
+            final navigator = Navigator.of(context);
+            model.createAspiration(navigator);
+          },
+          text: 'Kirim',
+          height: 45,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    });
   }
 }
 
