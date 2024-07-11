@@ -13,6 +13,7 @@ class RegisterRepository {
     required String phone,
     //required String dateBirth,
     required String password,
+    // ignore: non_constant_identifier_names
     required String confirm_password,
   }) async {
     try {

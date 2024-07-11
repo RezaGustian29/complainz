@@ -1,6 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_back_button.dart';
+import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +25,16 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppAppbar(
+        title: 'Ganti Password',
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
               vertical: AppSizes.padding, horizontal: AppSizes.padding),
           child: Column(
             children: [
-              const AppBackButton(text: 'Ganti Password'),
+              //const AppBackButton(text: 'Ganti Password'),
               const SizedBox(height: AppSizes.padding),
               form(),
               const Spacer(),

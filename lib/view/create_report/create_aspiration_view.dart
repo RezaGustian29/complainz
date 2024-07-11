@@ -200,25 +200,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.padding),
       child: AppButton(
-        onTap: () {
-          if (selectedTag != null && selectedOption != null) {
-            print('Tag yang dipilih: $selectedTag');
-            print('Opsi yang dipilih: $selectedOption');
-            // Kirim data ke database di sini
-          } else {
-            print('Tidak ada tag atau opsi yang dipilih');
-          }
-
-          // Navigator.pushNamed(context, '/create-aspiration');
-          // Contoh penggunaan nilai tag yang dipilih:
-
-          /*   if (selectedTag != null) {
-            print('Tag yang dipilih: $selectedTag');
-            // Kirim data ke database di sini
-          } else {
-            print('Tidak ada tag yang dipilih');
-          } */
-        },
+        onTap: () {},
         text: 'Kirim',
         height: 45,
         fontWeight: FontWeight.w700,

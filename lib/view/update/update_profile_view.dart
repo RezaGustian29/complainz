@@ -1,5 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_textfield.dart';
 import 'package:date_format_field/date_format_field.dart';
@@ -35,6 +36,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppAppbar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -167,7 +169,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
 
   Widget updateButton() {
     return Padding(
-      padding: const EdgeInsets.all(AppSizes.padding),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.padding, vertical: AppSizes.padding),
       child: AppButton(
         onTap: () {},
         text: 'Simpan',

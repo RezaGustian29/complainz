@@ -12,8 +12,11 @@ class AppColors {
   static const secondaryColor = Color(0xff3C486B);
   static const secondaryTextColor = Color(0xffF0F0F0);
   static const disableTextColor = Color(0xff1D1B20);
+  // ignore: use_full_hex_values_for_flutter_colors
   static const disableButtonColor = Color(0xff1e1d1b20);
+  // ignore: use_full_hex_values_for_flutter_colors
   static const contentColor = Color(0xfffffcfcfc);
+  // ignore: use_full_hex_values_for_flutter_colors
   static const shadowColor = Color(0xff3f000000);
   static const dividerColor = Colors.black;
   static const secondary100 = Color(0XFFF0F0F0);

@@ -8,10 +8,15 @@ class CreateReportRepository {
 
   Future<bool?> createReport({
     required String type,
+    // ignore: non_constant_identifier_names
     required int category_id,
+    // ignore: non_constant_identifier_names
+    // ignore: non_constant_identifier_names
     required String photo_url,
+    // ignore: non_constant_identifier_names
     required String video_url,
     required String description,
+    // ignore: non_constant_identifier_names
     required bool is_public,
   }) async {
     try {
