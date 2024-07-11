@@ -3,6 +3,8 @@ import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view_model/create_report_view_model.dart';
 import 'package:complainz/widgets/app_back_button.dart';
 import 'package:complainz/widgets/app_button.dart';
+import 'package:complainz/widgets/app_snackbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,8 @@ class CreateReportComplaintView extends StatefulWidget {
       _CreateReportComplaintViewState();
 }
 
-class _CreateReportComplaintViewState extends State<CreateReportComplaintView> {
+class _CreateReportComplaintViewState extends State<CreateReportComplaintView>
+    with WidgetsBindingObserver {
   int? selectedTag; // Variabel untuk menyimpan tag yang dipilih
   int? selectedOption;
 
@@ -31,6 +34,37 @@ class _CreateReportComplaintViewState extends State<CreateReportComplaintView> {
     {'label': 'Sistem Perkuliahan', 'value': 4},
     {'label': 'Mahasiswa', 'value': 5},
   ];
+
+//untuk reset form ketika switch ke halaman lain dan kembali lagi form kosong
+  CreateReportViewModel? _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    //_viewModel = Provider.of<CreateReportViewModel>(context, listen: false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _viewModel ??= Provider.of<CreateReportViewModel>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _viewModel?.resetFormWithoutNotify();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      _viewModel?.resetFormWithoutNotify();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +84,7 @@ class _CreateReportComplaintViewState extends State<CreateReportComplaintView> {
                 const SizedBox(height: AppSizes.padding),
                 form(),
                 complaintButton(),
+                resetButton(),
               ],
             ),
           ),
@@ -185,119 +220,6 @@ class _CreateReportComplaintViewState extends State<CreateReportComplaintView> {
               });
             },
           ),
-          /*   RadioListTile<bool>(
-            title: const Text('Umum'),
-            value: true,
-            groupValue: model.isPublic,
-            onChanged: (bool? value) {
-              setState(() {
-                model.updateSelecteIsPublic(value);
-              });
-            },
-          ),
-          RadioListTile<bool>(
-            title: const Text('Rahasia'),
-            value: false,
-            groupValue: model.isPublic,
-            onChanged: (bool? value) {
-              setState(() {
-                model.updateSelecteIsPublic(value);
-              });
-            },
-          ), */
-
-          /* RadioListTile<bool?>(
-            title: const Text('Umum'),
-            value: true,
-            groupValue: model.selectedOption == 1
-                ? true
-                : (model.selectedOption == 2 ? false : null),
-            onChanged: (bool? value) {
-              if (value == true) {
-                model.updateSelectedOption(1);
-              } else if (model.selectedOption == 1) {
-                model.updateSelectedOption(null);
-              }
-            },
-          ),
-          RadioListTile<bool?>(
-            title: const Text('Rahasia'),
-            value: false,
-            groupValue: model.selectedOption == 1
-                ? true
-                : (model.selectedOption == 2 ? false : null),
-            onChanged: (bool? value) {
-              if (value == false) {
-                model.updateSelectedOption(2);
-              } else if (model.selectedOption == 2) {
-                model.updateSelectedOption(null);
-              }
-            },
-          ), */
-          /*  RadioListTile<bool>(
-            title: const Text('Umum'),
-            value: true,
-            groupValue: model.selectedOption == 1,
-            onChanged: (bool? value) {
-              if (value == true) {
-                model.updateSelectedOption(1);
-              }
-            },
-          ),
-          RadioListTile<bool>(
-            title: const Text('Rahasia'),
-            value: false,
-            groupValue: model.selectedOption == 2,
-            onChanged: (bool? value) {
-              if (value == false) {
-                model.updateSelectedOption(2);
-              }
-            },
-          ), */
-          /* RadioListTile<int>(
-            title: const Text('Umum'),
-            value: 1,
-            groupValue: model.selectedOption,
-            onChanged: (int? value) {
-              setState(() {
-                model.updateSelectedOption(value);
-              });
-            },
-          ),
-          RadioListTile<int>(
-            title: const Text('Rahasia'),
-            value: 2,
-            groupValue: model.selectedOption,
-            onChanged: (int? value) {
-              setState(() {
-                model.updateSelectedOption(value);
-              });
-            },
-          ), */
-          /* RadioListTile(
-            title: const Text('Umum'),
-            value: 1,
-            groupValue: selectedOption,
-            onChanged: (value) {
-              setState(
-                () {
-                  selectedOption = value!;
-                },
-              );
-            },
-          ),
-          RadioListTile(
-            title: const Text('Rahasia'),
-            value: 2,
-            groupValue: selectedOption,
-            onChanged: (value) {
-              setState(
-                () {
-                  selectedOption = value!;
-                },
-              );
-            },
-          ), */
         ],
       );
     });
@@ -323,7 +245,30 @@ class _CreateReportComplaintViewState extends State<CreateReportComplaintView> {
   }
 }
 
+Widget resetButton() {
+  return Consumer<CreateReportViewModel>(builder: (context, model, _) {
+    //// Jika bukan mode debug, tidak menampilkan apa-apa
+    //if (!kDebugMode)return SizedBox.shrink();
 
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.padding),
+      child: Column(
+        children: [
+          AppButton(
+            onTap: () async {
+              await model.resetDailyCount();
+              AppSnackbar.show(context as NavigatorState,
+                  title: 'berhasil reset harian');
+            },
+            text: 'Reset',
+            height: 45,
+            fontWeight: FontWeight.w700,
+          ),
+        ],
+      ),
+    );
+  });
+}
 
 /* import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';

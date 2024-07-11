@@ -3,6 +3,7 @@ import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/report/components/report_card_tile.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/widgets/app_appbar.dart';
+import 'package:complainz/widgets/app_empty_state.dart';
 import 'package:complainz/widgets/app_progres_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -172,7 +173,7 @@ class _ReportViewState extends State<ReportView> {
 
         if (model.getAllReport.isEmpty) {
           return const Center(
-            child: Text('Kosong'),
+            child: AppEmptyState(),
           );
         }
         return ListView.builder(
