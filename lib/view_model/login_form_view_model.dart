@@ -44,8 +44,10 @@ class LoginFormViewModel extends ChangeNotifier {
       } else {
         cl('[onLogin].error = login failed');
         navigator.pop();
-        AppDialog.showErrorDialog(navigator,
-            title: 'Oops', message: 'Username atau password Salah');
+        AppSnackbar.show(navigator,
+            title: 'Username atau password salah', backgroundColor: Colors.red);
+        /* AppDialog.showErrorDialog(navigator,
+            title: 'Oops', message: 'Username atau password Salah'); */
       }
     } catch (e) {
       cl('[onLogin].error: $e');

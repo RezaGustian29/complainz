@@ -28,6 +28,8 @@ class _HomeViewState extends State<HomeView> {
                 newsButton(),
                 const SizedBox(height: AppSizes.padding / 4),
                 content(),
+                const SizedBox(height: AppSizes.padding),
+
                 //const SizedBox(height: AppSizes.padding / 4),
                 //footer(),
               ],

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ class AppReportCardTile extends StatelessWidget {
   final String createdAt;
   final String description;
   final String fedback;
+  final String? reportImage;
+
   const AppReportCardTile({
     super.key,
     this.photoUrl,
@@ -17,6 +21,7 @@ class AppReportCardTile extends StatelessWidget {
     required this.createdAt,
     required this.description,
     required this.fedback,
+    this.reportImage,
   });
 
   @override
@@ -156,10 +161,24 @@ class AppReportCardTile extends StatelessWidget {
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Image.asset(
+                      if (reportImage != null) _buildImageWidget(reportImage!),
+                      /*  if (reportImage != null && reportImage!.isNotEmpty)
+                        Image.memory(
+                          base64Decode(reportImage!),
+                          width: 50,
+                        ), */
+
+                      /* if (reportImage != null && reportImage!.isNotEmpty)
+                        (Uri.tryParse(reportImage!)?.hasAbsolutePath ?? false)
+                            ? Image.network(reportImage!)
+                            : Image.memory(
+                                base64Decode(reportImage!),
+                                width: 50,
+                              ), */
+                      /* Image.asset(
                         'assets/images/images_logo.png',
                         width: 50,
-                      ),
+                      ), */
                     ],
                   ),
                 ),
@@ -209,7 +228,38 @@ class AppReportCardTile extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildImageWidget(String imageString) {
+    if (Uri.tryParse(imageString)?.hasAbsolutePath ?? false) {
+      // If it's a valid URL
+      return Image.network(
+        imageString,
+        width: 80,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return const Center(child: CircularProgressIndicator());
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return const Icon(Icons.error);
+        },
+      );
+    } else if (imageString.startsWith('data:image')) {
+      // If it's a base64 encoded image
+      final base64String = imageString.split(',').last;
+      return Image.memory(
+        base64Decode(base64String),
+        width: 80,
+      );
+    } else {
+      // If it's neither a URL nor base64, show an error icon
+      return const Icon(Icons.broken_image);
+    }
+  }
 }
+
+
+
+
 
 
 /* import 'package:complainz/config/app_colors.dart';

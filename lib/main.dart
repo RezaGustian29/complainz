@@ -1,5 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/provider/bottom_navbar_provider.dart';
+import 'package:complainz/view/about/about_view.dart';
 import 'package:complainz/view/account/my_account_view.dart';
 import 'package:complainz/view/bottom_navbar/bottom_navbar.dart';
 import 'package:complainz/view/create_report/create_aspiration_view.dart';
@@ -20,11 +21,14 @@ import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
 import 'package:complainz/view_model/create_aspiration_view_model.dart';
 import 'package:complainz/view_model/create_report_view_model.dart';
+import 'package:complainz/view_model/delete_account_view_model.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/view_model/get_report_status_view_model.dart';
 import 'package:complainz/view_model/get_user_profile_view_model.dart';
 import 'package:complainz/view_model/login_form_view_model.dart';
 import 'package:complainz/view_model/register_form_view_model.dart';
+import 'package:complainz/view_model/update_password_view_model.dart';
+import 'package:complainz/view_model/update_profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +51,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => GetReportStatusViewModel()),
         ChangeNotifierProvider(create: (_) => GetUserProfileViewModel()),
         ChangeNotifierProvider(create: (_) => CreateAspirationViewModel()),
+        ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => UpdatePasswordViewModel()),
+        ChangeNotifierProvider(create: (_) => DeleteAccountViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -86,6 +93,7 @@ class MyApp extends StatelessWidget {
           '/history': (context) => const HistoryReportView(),
           '/update-pass': (context) => const UpdatePasswordView(),
           '/update-profile': (context) => const UpdateProfileView(),
+          '/about': (context) => const AboutView(),
         },
       ),
     );

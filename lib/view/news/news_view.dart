@@ -1,6 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_back_button.dart';
+import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_card_news.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +15,9 @@ class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppAppbar(
+        title: "Berita Terkini",
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -22,9 +25,6 @@ class _NewsViewState extends State<NewsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppBackButton(
-                  text: 'Berita Terkini',
-                ),
                 const SizedBox(height: AppSizes.padding),
                 popularNews(),
                 const SizedBox(height: AppSizes.padding),

@@ -1,10 +1,12 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/view_model/update_profile_view_model.dart';
 import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_textfield.dart';
 import 'package:date_format_field/date_format_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UpdateProfileView extends StatefulWidget {
   const UpdateProfileView({super.key});
@@ -110,72 +112,79 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   }
 
   Widget form() {
-    return Column(
-      children: [
-        AppTextField(
-          hintText: 'Name',
-          obscureText: _passwordVisible,
-          rounded: false,
-          borderRadius: AppSizes.radius * 1.5,
-          icon: Icon(
-            _passwordVisible ? Icons.visibility_off : Icons.visibility,
-          ),
-          onPressed: () {
-            setState(() {
-              _passwordVisible = !_passwordVisible;
-            });
-          },
-        ),
-        const SizedBox(
-          height: AppSizes.padding / 2,
-        ),
-        AppTextField(
-          hintText: 'No WhatSapp',
-          obscureText: _passwordVisible,
-          rounded: false,
-          borderRadius: AppSizes.radius * 1.5,
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: AppSizes.padding / 2,
-        ),
-        DateFormatField(
-          initialDate: DateTime.now(),
-          addCalendar: true,
-          type: DateFormatType.type4,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                AppSizes.radius * 1.5,
+    return Consumer<UpdateProfileViewModel>(
+      builder: (context, model, _) {
+        return Column(
+          children: [
+            AppTextField(
+              controller: model.usernameController,
+              hintText: 'Name',
+              rounded: false,
+              borderRadius: AppSizes.radius * 1.5,
+            ),
+            const SizedBox(
+              height: AppSizes.padding / 2,
+            ),
+            AppTextField(
+              controller: model.phoneController,
+              hintText: 'No WhatSapp',
+              obscureText: _passwordVisible,
+              rounded: false,
+              borderRadius: AppSizes.radius * 1.5,
+              onPressed: () {},
+            ),
+            const SizedBox(
+              height: AppSizes.padding / 2,
+            ),
+            DateFormatField(
+              controller: model.dateBirthController,
+              initialDate: DateTime.now(),
+              addCalendar: true,
+              type: DateFormatType.type4,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(
+                    AppSizes.radius * 1.5,
+                  ),
+                ),
+                hintStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primaryColor,
+                ),
+                // border: InputBorder.none
+                hintText: 'Tanggal Lahir',
               ),
-            ),
-            hintStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.primaryColor,
-            ),
-            // border: InputBorder.none
-            hintText: 'Tanggal Lahir',
-          ),
-          onComplete: (date) {
-            setState(() {
-              _date = date;
-            });
-          },
-        )
-      ],
+              onComplete: (date) {
+                setState(() {
+                  _date = date;
+                });
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
   Widget updateButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.padding, vertical: AppSizes.padding),
-      child: AppButton(
-        onTap: () {},
-        text: 'Simpan',
-        height: 45,
-      ),
+    return Consumer<UpdateProfileViewModel>(
+      builder: (context, model, _) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.padding, vertical: AppSizes.padding),
+          child: AppButton(
+            onTap: () async {
+              FocusScope.of(context).unfocus();
+              final navigator = Navigator.of(context);
+
+              model.updateUser(navigator, context);
+            },
+            text: 'Simpan',
+            height: 45,
+          ),
+        );
+      },
     );
   }
 }

@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view_model/create_aspiration_view_model.dart';
 import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
+import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CreateAspirationView extends StatefulWidget {
@@ -58,6 +62,8 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
     }
   }
 
+  XFile? image;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +81,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
                 const SizedBox(height: AppSizes.padding),
                 form(),
                 complaintButton(),
+                resetButton(),
               ],
             ),
           ),
@@ -97,17 +104,119 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
               color: AppColors.primaryColor,
             ),
           ),
-          TextFormField(
-            controller: model.aspirationController,
-            minLines: 6,
-            maxLines: null,
-            keyboardType: TextInputType.multiline,
-            decoration: InputDecoration(
-              hintText: "Ketik disini...",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+          Stack(
+            children: [
+              TextFormField(
+                controller: model.aspirationController,
+                minLines: 6,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  hintText: "Ketik disini...",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 1,
+                right: 240,
+                child: Container(
+                  width: 83,
+                  height: 36.40,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      topRight: Radius.circular(30),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.camera_alt_outlined,
+                            size: 21,
+                            color: Colors.yellow,
+                          ),
+                          onPressed: () async {
+                            // Add image upload functionality here
+                            /*   ImagePicker()
+                                .pickImage(
+                                    source: ImageSource.camera,
+                                    preferredCameraDevice: CameraDevice.rear)
+                                .then((value) {
+                              setState(() {
+                                image = value;
+                              });
+                            }); */
+                            ImagePicker()
+                                .pickImage(
+                                    source: ImageSource.camera,
+                                    preferredCameraDevice: CameraDevice.rear)
+                                .then((value) {
+                              if (value != null) {
+                                final imageFile = File(value.path);
+                                model.convertImageToBase64(imageFile);
+                                setState(() {
+                                  image = value;
+                                });
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.image,
+                            size: 21,
+                            color: Colors.yellow,
+                          ),
+                          onPressed: () async {
+                            // Add file upload functionality here
+                            /* ImagePicker()
+                                .pickImage(source: ImageSource.gallery)
+                                .then((value) {
+                              setState(() {
+                                image = value;
+                              });
+                            }); */
+                            ImagePicker()
+                                .pickImage(source: ImageSource.gallery)
+                                .then((value) {
+                              if (value != null) {
+                                final imageFile = File(value.path);
+                                model.convertImageToBase64(imageFile);
+                                setState(() {
+                                  image = value;
+                                });
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSizes.padding),
+          Container(
+            width: double.infinity,
+            height: 100,
+            decoration: BoxDecoration(
+                color: image == null ? Colors.blue : null,
+                image: image != null
+                    ? DecorationImage(
+                        image: FileImage(
+                          File(image!.path),
+                        ),
+                      )
+                    : null),
           ),
           const SizedBox(height: AppSizes.padding),
           const Text(
@@ -194,7 +303,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
             groupValue: model.isPublic,
             onChanged: (bool? value) {
               setState(() {
-                model.updateSelecteIsPublic(
+                model.updateSelectedIsPublic(
                     model.isPublic == true ? null : value);
               });
             },
@@ -205,7 +314,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
             groupValue: model.isPublic,
             onChanged: (bool? value) {
               setState(() {
-                model.updateSelecteIsPublic(
+                model.updateSelectedIsPublic(
                     model.isPublic == false ? null : value);
               });
             },
@@ -233,6 +342,32 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
       );
     });
   }
+}
+
+Widget resetButton() {
+  return Consumer<CreateAspirationViewModel>(builder: (context, model, _) {
+    //// Jika bukan mode debug, tidak menampilkan apa-apa
+    //if (!kDebugMode)return SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.padding),
+      child: Column(
+        children: [
+          AppButton(
+            onTap: () async {
+              await model.resetDailyCount();
+              // ignore: use_build_context_synchronously
+              AppSnackbar.show(Navigator.of(context),
+                  title: 'berhasil reset harian');
+            },
+            text: 'Reset',
+            height: 45,
+            fontWeight: FontWeight.w700,
+          ),
+        ],
+      ),
+    );
+  });
 }
 
 /* import 'package:complainz/config/app_colors.dart';

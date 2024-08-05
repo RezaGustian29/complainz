@@ -2,12 +2,18 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class HistoryReportTile extends StatelessWidget {
   final String? description;
-  const HistoryReportTile({
+  final Function() onPressed;
+
+  HistoryReportTile({
     super.key,
     this.description,
+    required this.onPressed,
   });
+
+  bool? isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +22,14 @@ class HistoryReportTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          /*  Checkbox(
+            value: isChecked,
+            onChanged: (val) {
+              setState(() {
+                isChecked = val ?? false;
+              });
+            },
+          ), */
           Expanded(
             child: Text(
               description!,
@@ -28,7 +42,13 @@ class HistoryReportTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          TextButton(
+          IconButton(
+            onPressed: onPressed,
+            icon: const Icon(
+              Icons.delete,
+            ),
+          ),
+          /* TextButton(
             style: TextButton.styleFrom(
               backgroundColor: AppColors.primaryColor,
               shape: RoundedRectangleBorder(
@@ -50,7 +70,7 @@ class HistoryReportTile extends StatelessWidget {
                 color: AppColors.secondaryTextColor,
               ),
             ),
-          ),
+          ), */
         ],
       ),
     );

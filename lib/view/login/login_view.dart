@@ -65,55 +65,124 @@ class _LoginViewState extends State<LoginView> {
       value: loginFormViewModel,
       child: Consumer<LoginFormViewModel>(builder: (context, model, _) {
         return Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSizes.padding),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  text(),
-                  const SizedBox(height: AppSizes.padding * 2),
-                  form(),
-                  const SizedBox(height: AppSizes.padding),
-                  loginButton(),
-                ],
+          body: Stack(alignment: Alignment.bottomCenter, children: [
+            background(),
+            body(),
+            /* const SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(AppSizes.padding),
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    /*  text(),
+                    const SizedBox(height: AppSizes.padding * 2),
+                    form(),
+                    const SizedBox(height: AppSizes.padding),
+                    loginButton(), */
+                  ],
+                ),
               ),
-            ),
-          ),
+            ), */
+          ]),
         );
       }),
     );
   }
 
+  Widget background() {
+    return Container(
+      width: double.maxFinite,
+      height: double.maxFinite,
+      alignment: Alignment.topCenter,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary2,
+            AppColors.primary1,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget body() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(child: text()),
+        /*  Text(
+          'Hi! Selamat Datang!',
+          style: AppTextStyle.heading3(
+            color: AppColors.white,
+          ),
+        ),  */
+        const SizedBox(height: AppSizes.padding),
+        Container(
+          padding: const EdgeInsets.symmetric(
+              vertical: AppSizes.padding * 1.5, horizontal: AppSizes.padding),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(AppSizes.radius * 3),
+              topRight: Radius.circular(AppSizes.radius * 3),
+            ),
+          ),
+          child: form(),
+        ),
+      ],
+    );
+  }
+
   Widget text() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSizes.padding * 3),
-      child: Column(
-        children: [
-          Image.asset(
-            'assets/images/images_logo.png',
-            width: 80,
-            height: 80,
-          ),
-          const Text(
-            'Selamat Datang Kembali',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/images_logo.png',
+              width: 56,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            'Laporkan keadaan terkini.',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppColors.primaryColor,
+            const SizedBox(width: AppSizes.padding / 4),
+            const Text(
+              'Complainz',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
+          ],
+        )
+
+        /* Image.asset(
+          'assets/images/images_logo.png',
+          width: 30,
+          height: 30,
+        ),
+        const Text(
+          'Selamat Datang Kembali',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
           ),
-          /*   const Text(
+          textAlign: TextAlign.center,
+        ),
+        const Text(
+          'Laporkan keadaan terkini.',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.primaryColor,
+          ),
+          textAlign: TextAlign.center,
+        ), */
+        /*   const Text(
             'Complainz sudah menantikan kamu, \nayo mulai laporkan keadaan terkini.',
             style: TextStyle(
               fontSize: 12,
@@ -122,8 +191,7 @@ class _LoginViewState extends State<LoginView> {
             ),
             textAlign: TextAlign.center,
           ), */
-        ],
-      ),
+      ],
     );
   }
 
@@ -169,6 +237,44 @@ class _LoginViewState extends State<LoginView> {
                       )
                     ],
                   ),
+                ),
+              ],
+            ),
+          ),
+          AppButton(
+            text: 'Masuk',
+            height: 45,
+            fontWeight: FontWeight.w700,
+            onTap: () async {
+              FocusScope.of(context).unfocus();
+              final navigator = Navigator.of(context);
+
+              model.onLogin(navigator, context);
+            },
+          ),
+          const SizedBox(height: AppSizes.padding),
+          RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Belum Punya Akun, ',
+                  style: TextStyle(
+                    color: AppColors.font,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Daftar Sekarang',
+                  style: const TextStyle(
+                    color: AppColors.font,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pushReplacementNamed(context, '/register');
+                    },
                 ),
               ],
             ),
