@@ -1,9 +1,11 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
+import 'package:complainz/view_model/update_password_view_model.dart';
 import 'package:complainz/widgets/app_appbar.dart';
 import 'package:complainz/widgets/app_button.dart';
 import 'package:complainz/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UpdatePasswordView extends StatefulWidget {
   const UpdatePasswordView({super.key});
@@ -13,12 +15,10 @@ class UpdatePasswordView extends StatefulWidget {
 }
 
 class _UpdatePasswordViewState extends State<UpdatePasswordView> {
-  bool _passwordVisible = false;
   bool buttonActive = false;
 
   @override
   void initState() {
-    _passwordVisible = false;
     super.initState();
   }
 
@@ -37,7 +37,6 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
               //const AppBackButton(text: 'Ganti Password'),
               const SizedBox(height: AppSizes.padding),
               form(),
-              const Spacer(),
               updateButton(),
             ],
           ),
@@ -47,46 +46,52 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
   }
 
   Widget form() {
-    return Column(
-      children: [
-        AppTextField(
-          hintText: 'Password',
-          obscureText: _passwordVisible,
-          rounded: false,
-          borderRadius: AppSizes.radius * 1.5,
-          icon: Icon(
-            _passwordVisible ? Icons.visibility_off : Icons.visibility,
-          ),
-          onPressed: () {
-            setState(() {
-              _passwordVisible = !_passwordVisible;
-            });
-          },
-        ),
-        const SizedBox(
-          height: AppSizes.padding / 2,
-        ),
-        AppTextField(
-          hintText: 'Ulangi Password',
-          obscureText: _passwordVisible,
-          rounded: false,
-          borderRadius: AppSizes.radius * 1.5,
-          onPressed: () {},
-        ),
-      ],
+    return Consumer<UpdatePasswordViewModel>(
+      builder: (context, model, _) {
+        return Column(
+          children: [
+            AppTextField(
+              controller: model.oldController,
+              hintText: 'Old Password',
+              suffixIcon: true,
+              borderRadius: AppSizes.radius * 1.5,
+              rounded: false,
+              obscureText: true,
+            ),
+            const SizedBox(height: AppSizes.padding / 2),
+            AppTextField(
+              controller: model.newController,
+              hintText: 'New Password',
+              suffixIcon: true,
+              borderRadius: AppSizes.radius * 1.5,
+              rounded: false,
+              obscureText: true,
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget updateButton() {
-    return AppButton(
-      onTap: () {},
-      text: 'Simpan',
-      titleStyle: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-        color: AppColors.secondaryTextColor,
-      ),
-      height: 45,
+    return Consumer<UpdatePasswordViewModel>(
+      builder: (context, model, _) {
+        return AppButton(
+          onTap: () async {
+            FocusScope.of(context).unfocus();
+            final navigator = Navigator.of(context);
+
+            model.updateUserPass(navigator, context);
+          },
+          text: 'Simpan',
+          titleStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: AppColors.secondaryTextColor,
+          ),
+          height: 45,
+        );
+      },
     );
   }
 }

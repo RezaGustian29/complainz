@@ -1,12 +1,20 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:complainz/repository/create_report_repository.dart';
 import 'package:complainz/widgets/app_dialog.dart';
 import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:complainz/widgets/console_log.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateReportViewModel extends ChangeNotifier {
   final reportController = TextEditingController();
+
+  String? photoBase64;
+  File? imageFile;
 
   int reportCount = 0;
   DateTime? _lastReportDate;
@@ -107,7 +115,7 @@ class CreateReportViewModel extends ChangeNotifier {
       bool isSuccess = await createReportRepo.createReport(
             type: 'Complaint',
             category_id: selectedTag!,
-            photo_url: "",
+            photo_url: photoBase64 ?? "",
             video_url: "",
             description: reportController.text,
             is_public: isPublic!,
@@ -134,6 +142,36 @@ class CreateReportViewModel extends ChangeNotifier {
       navigator.pop();
       cl('[createReport].error $e');
       AppDialog.showErrorDialog(navigator, error: e.toString());
+    }
+  }
+
+  Future<void> convertImageToBase64(File imageFile) async {
+    try {
+      // Compress the image to JPEG format
+      List<int> compressedBytes = await FlutterImageCompress.compressWithFile(
+            imageFile.absolute.path,
+            format: CompressFormat.jpeg,
+            quality: 85,
+          ) ??
+          [];
+
+      // Convert compressed bytes to base64
+      String base64String = base64Encode(compressedBytes);
+
+      // Add MIME type prefix for JPEG
+      photoBase64 = 'data:image/jpeg;base64,$base64String';
+
+      // Log the first 100 characters of the base64 string
+      // ignore: avoid_print
+      print(
+          '[convertImageToBase64] = ${photoBase64?.substring(0, min(100, photoBase64!.length))}');
+
+      notifyListeners();
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error converting image to base64: $e');
+      photoBase64 = null;
+      notifyListeners();
     }
   }
 }

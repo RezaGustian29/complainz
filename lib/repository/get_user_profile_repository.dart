@@ -22,6 +22,7 @@ class GetUserProfileRepository {
       );
 
       if (response.statusCode == 200) {
+        await prefs.setInt('idUser', response.data['user']['id']);
         GetUserProfileModel userProfile =
             GetUserProfileModel.fromJson(response.data["user"]);
         return userProfile;

@@ -6,14 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class GetReportStatusRepository {
   Dio dio = Dio();
 
-  Future<List<GetReportStatusModel>> getReportStatus(
-      {required String status}) async {
+  Future<List<GetReportStatusModel>> getReportStatus() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? getToken = prefs.getString('token');
       prefs.containsKey('token');
       var response = await dio.get(
-        "${AppUrl.getReportStatus}$status",
+        "${AppUrl.getReportStatus}All",
         options: Options(
           headers: {
             'Authorization': 'Bearer $getToken',

@@ -16,7 +16,7 @@ class AppEmptyState extends StatelessWidget {
         ),
         const SizedBox(height: AppSizes.padding),
         const Text(
-          'Belum Ada Laporan',
+          'Pilih kategori',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
