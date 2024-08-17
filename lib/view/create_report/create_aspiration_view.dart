@@ -204,7 +204,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
               ),
             ],
           ),
-          const SizedBox(height: AppSizes.padding),
+          /* const SizedBox(height: AppSizes.padding),
           Container(
             width: double.infinity,
             height: 100,
@@ -217,7 +217,7 @@ class _CreateAspirationViewState extends State<CreateAspirationView>
                         ),
                       )
                     : null),
-          ),
+          ), */
           const SizedBox(height: AppSizes.padding),
           const Text(
             'Pilih Kategori',

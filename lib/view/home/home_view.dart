@@ -2,6 +2,7 @@ import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/report/report_view.dart';
 import 'package:complainz/widgets/app_card.dart';
+import 'package:complainz/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -27,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
                 const SizedBox(height: AppSizes.padding / 4),
                 newsButton(),
                 const SizedBox(height: AppSizes.padding / 4),
-                content(),
+                content(NavigatorState()),
                 const SizedBox(height: AppSizes.padding),
 
                 //const SizedBox(height: AppSizes.padding / 4),
@@ -90,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget content() {
+  Widget content(NavigatorState navigator) {
     return Container(
       margin: const EdgeInsets.only(
         top: 25,
@@ -192,7 +193,7 @@ class _HomeViewState extends State<HomeView> {
                 PageRouteBuilder(
                     pageBuilder: (context, animation, secondaryAnimation) {
                       return const ReportView(
-                        category: "4",
+                        category: "5",
                       );
                     },
                     transitionDuration: const Duration(milliseconds: 300),

@@ -263,9 +263,9 @@ class _ReportViewState extends State<ReportView> {
         }
       },
       style: ElevatedButton.styleFrom(
-        foregroundColor: isSelected ? Colors.white : Colors.blue,
-        backgroundColor: isSelected ? Colors.blue : Colors.white,
-        side: const BorderSide(color: Colors.blue),
+        foregroundColor: isSelected ? Colors.white : Colors.black,
+        backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
+        side: const BorderSide(color: AppColors.primaryColor),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -345,6 +345,43 @@ class _ReportViewState extends State<ReportView> {
     return Consumer<GetAllReportViewModel>(
       builder: (context, model, _) {
         // ignore: unnecessary_null_comparison
+        if (model.getAllReport == null || model.isLoading) {
+          return const Center(
+            child: AppProgresIndicator(),
+          );
+        }
+
+        if (model.getAllReport.isEmpty) {
+          return const Center(
+            child: AppEmptyState(),
+          );
+        }
+
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          itemCount: model.getAllReport.length,
+          itemBuilder: (context, i) {
+            final result = model.getAllReport[i];
+            return AppReportCardTile(
+              photoUrl: result.photoProfile,
+              fullname: result.fullName,
+              username: "@${result.username}",
+              createdAt: result.createdAt,
+              description: result.description,
+              fedback: result.feedback ?? '',
+              reportImage: result.photoUrl ?? '',
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /* Widget content() {
+    return Consumer<GetAllReportViewModel>(
+      builder: (context, model, _) {
+        // ignore: unnecessary_null_comparison
         if (model.getAllReport == null) {
           return const Center(
             child: AppProgresIndicator(),
@@ -375,7 +412,7 @@ class _ReportViewState extends State<ReportView> {
         );
       },
     );
-  }
+  } */
 /* 
   Container(
             margin: const EdgeInsets.symmetric(

@@ -1,5 +1,7 @@
 import 'package:complainz/view/history/components/history_report_tile.dart';
+import 'package:complainz/view_model/delete_report_view_model.dart';
 import 'package:complainz/view_model/get_report_status_view_model.dart';
+import 'package:complainz/widgets/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
@@ -186,7 +188,8 @@ class _HistoryReportViewState extends State<HistoryReportView> {
   } */
 
   Widget body() {
-    return Consumer<GetReportStatusViewModel>(builder: (context, model, _) {
+    return Consumer2<GetReportStatusViewModel, DeleteReportViewModel>(
+        builder: (context, model, deleteModel, _) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -235,7 +238,8 @@ class _HistoryReportViewState extends State<HistoryReportView> {
                 return HistoryReportTile(
                   description: result.description,
                   onPressed: () {
-                    _dialogBuilder(context);
+                    _showDeleteConfirmationDialog(
+                        context, deleteModel, result.id);
                   },
                   //description: "${i + 1}. ${result.description}",
                 );
@@ -247,7 +251,141 @@ class _HistoryReportViewState extends State<HistoryReportView> {
     });
   }
 
-  Future<void> _dialogBuilder(BuildContext context) {
+  void _showDeleteConfirmationDialog(
+      BuildContext context, DeleteReportViewModel deleteModel, int reportId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.primaryColor,
+          content: const SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                Icon(Icons.delete, size: 50, color: AppColors.timelineColor),
+                SizedBox(height: AppSizes.padding / 2),
+                Text(
+                  'Kamu Yakin Untuk Mencabut Laporan?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.secondaryTextColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Ya, Hapus',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.secondaryTextColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _deleteReport(
+                  context,
+                  Navigator.of(context),
+                  deleteModel,
+                  reportId,
+                );
+              },
+            ),
+            TextButton(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppSizes.radius * 2),
+                    color: AppColors.timelineColor),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.padding,
+                      vertical: AppSizes.padding / 2),
+                  child: Text(
+                    'Tidak',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+
+        /* AlertDialog(
+          title: const Text('Konfirmasi Penghapusan'),
+          content: const Text('Apakah Anda yakin ingin menghapus laporan ini?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Hapus'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _deleteReport(
+                  context,
+                  Navigator.of(context),
+                  deleteModel,
+                  reportId,
+                );
+              },
+            ),
+          ],
+        ); */
+      },
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  void _deleteReport(BuildContext context, NavigatorState Navigator,
+      DeleteReportViewModel deleteModel, int reportId) async {
+    await deleteModel.deleteResultCompaintId(id: reportId);
+
+    // Periksa apakah context masih valid
+    if (!context.mounted) return;
+
+    if (deleteModel.isDeleted) {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator, title: 'Laporan berhasil dihapus');
+        /* ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan berhasil dihapus')),
+        ); */
+      }
+      // Refresh the report list
+      if (context.mounted) {
+        Provider.of<GetReportStatusViewModel>(context, listen: false)
+            .getResultReportStatus(status: "All");
+      }
+    } else {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator,
+            title: 'Gagal menghapus laporan: ${deleteModel.errorMessage}');
+/* 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Gagal menghapus laporan: ${deleteModel.errorMessage}')),
+        ); */
+      }
+    }
+  }
+/* 
+  Future<void> _dialogBuilder(
+      BuildContext context, DeleteReportViewModel deleteModel, int reportId) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -282,8 +420,15 @@ class _HistoryReportViewState extends State<HistoryReportView> {
                 ),
               ),
               onPressed: () {
-                //Navigator.of(context).pop();
-                success(context);
+                Navigator.of(context).pop();
+                _deleteReport(
+                  context,
+                  Navigator.of(context),
+                  deleteModel,
+                  reportId,
+                );
+                //_deleteReport(context, Navigator, deleteModel, reportId);
+                //success(context);
               },
             ),
             TextButton(
@@ -313,9 +458,118 @@ class _HistoryReportViewState extends State<HistoryReportView> {
         );
       },
     );
-  }
+  } */
 
-  Future<void> success(BuildContext context) {
+/* 
+  Future<void> _dialogBuilder(BuildContext context, int reportId) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Consumer<DeleteReportViewModel>(
+          builder: (context, model, _) {
+            return AlertDialog(
+              backgroundColor: AppColors.primaryColor,
+              content: const SizedBox(
+                height: 100,
+                child: Column(
+                  children: [
+                    Icon(Icons.delete,
+                        size: 50, color: AppColors.timelineColor),
+                    SizedBox(height: AppSizes.padding / 2),
+                    Text(
+                      'Kamu Yakin Untuk Mencabut Laporan?',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.secondaryTextColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text(
+                    'Ya, Hapus',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondaryTextColor,
+                    ),
+                  ),
+                  onPressed: () async {
+                    DeleteReportViewModel viewModel = DeleteReportViewModel();
+                    await viewModel.deleteReport(context, id: reportId);
+                    success(context);
+                  },
+                ),
+                TextButton(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(AppSizes.radius * 2),
+                        color: AppColors.timelineColor),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes.padding,
+                          vertical: AppSizes.padding / 2),
+                      child: Text(
+                        'Tidak',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  } */
+
+  /* void _deleteReport(BuildContext context, NavigatorState Navigator,
+      DeleteReportViewModel deleteModel, int reportId) async {
+    await deleteModel.deleteResultCompaintId(id: reportId);
+
+    // Periksa apakah context masih valid
+    if (!context.mounted) return;
+
+    if (deleteModel.isDeleted) {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator, title: 'Laporan berhasil dihapus');
+        /*  ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan berhasil dihapus')),
+        ); */
+      }
+      // Refresh the report list
+      if (context.mounted) {
+        Provider.of<GetReportStatusViewModel>(context, listen: false)
+            .getResultReportStatus(status: "All");
+      }
+    } else {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator,
+            title: 'Gagal menghapus laporan: ${deleteModel.errorMessage}');
+
+        /*  ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Gagal menghapus laporan: ${deleteModel.errorMessage}')),
+        ); */
+      }
+    }
+  } */
+
+  /* Future<void> success(BuildContext context) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -342,7 +596,7 @@ class _HistoryReportViewState extends State<HistoryReportView> {
         );
       },
     );
-  }
+  } */
 
   /* Widget body() {
     return Consumer<GetReportStatusViewModel>(builder: (context, model, _) {

@@ -129,7 +129,7 @@ class AppReportCardTile extends StatelessWidget {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
-                  color: Colors.amber,
+                  color: Color(0xFFF0F0F0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -155,30 +155,16 @@ class AppReportCardTile extends StatelessWidget {
                       Text(
                         description,
                         style: const TextStyle(
-                          fontSize: 10,
+                          //fontSize: 10,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: AppColors.primaryColor,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (reportImage != null) _buildImageWidget(reportImage!),
-                      /*  if (reportImage != null && reportImage!.isNotEmpty)
-                        Image.memory(
-                          base64Decode(reportImage!),
-                          width: 50,
-                        ), */
-
-                      /* if (reportImage != null && reportImage!.isNotEmpty)
-                        (Uri.tryParse(reportImage!)?.hasAbsolutePath ?? false)
-                            ? Image.network(reportImage!)
-                            : Image.memory(
-                                base64Decode(reportImage!),
-                                width: 50,
-                              ), */
-                      /* Image.asset(
-                        'assets/images/images_logo.png',
-                        width: 50,
-                      ), */
+                      const SizedBox(height: AppSizes.padding / 3.5),
+                      if (reportImage != null)
+                        _buildImageWidget(context, reportImage!),
                     ],
                   ),
                 ),
@@ -229,12 +215,46 @@ class AppReportCardTile extends StatelessWidget {
     );
   }
 
-  Widget _buildImageWidget(String imageString) {
+  Widget _buildImageWidget(BuildContext context, String imageString) {
+    //const double imageWidth = 80;
+    const double imageWidth = 63.50;
+    const double borderRadius = 8;
+
+    Widget buildImageWithRadius(Widget imageWidget) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: imageWidget,
+      );
+    }
+
+    void showImagePreview(BuildContext context, Widget imageWidget) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: imageWidget,
+            ),
+          );
+        },
+      );
+    }
+
+    Widget buildTappableImage(Widget imageWidget) {
+      return GestureDetector(
+        onTap: () => showImagePreview(context, imageWidget),
+        child: buildImageWithRadius(imageWidget),
+      );
+    }
+
     if (Uri.tryParse(imageString)?.hasAbsolutePath ?? false) {
       // If it's a valid URL
-      return Image.network(
+      Widget networkImage = Image.network(
         imageString,
-        width: 80,
+        width: imageWidth,
+        fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return const Center(child: CircularProgressIndicator());
@@ -243,13 +263,16 @@ class AppReportCardTile extends StatelessWidget {
           return const Icon(Icons.error);
         },
       );
+      return buildTappableImage(networkImage);
     } else if (imageString.startsWith('data:image')) {
       // If it's a base64 encoded image
       final base64String = imageString.split(',').last;
-      return Image.memory(
+      Widget memoryImage = Image.memory(
         base64Decode(base64String),
-        width: 80,
+        width: imageWidth,
+        fit: BoxFit.cover,
       );
+      return buildTappableImage(memoryImage);
     } else {
       // If it's neither a URL nor base64, show an error icon
       return const Icon(Icons.broken_image);

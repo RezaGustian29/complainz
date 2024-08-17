@@ -58,7 +58,7 @@ class _NewsViewState extends State<NewsView> {
             ),
           ),
         ),
-        Positioned(
+        /*   Positioned(
           bottom: -25, // Half of the height of the container
           left: 20,
           right: 20,
@@ -78,7 +78,7 @@ class _NewsViewState extends State<NewsView> {
               ),
             ),
           ),
-        ),
+        ), */
       ],
     );
   }

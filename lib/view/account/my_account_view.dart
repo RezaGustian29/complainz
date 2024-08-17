@@ -39,7 +39,7 @@ class _MyAccountViewState extends State<MyAccountView> {
               pictureProfile(),
               const SizedBox(height: AppSizes.padding),
               cardInfo(),
-              const SizedBox(height: AppSizes.padding * 2),
+              const SizedBox(height: AppSizes.padding * 1.5),
               settingCard(),
               const SizedBox(height: AppSizes.padding),
               bottomButton(),
