@@ -43,6 +43,13 @@ dependencies:
   image_picker: ^1.1.2
   image: ^4.2.0
   flutter_image_compress: ^2.3.0
+  email_validator: '^2.1.17'
+  project:
+    # git:
+    #   url: https://github.com/ideaver/alvamind-one-library-frontend.git
+    #   ref: main
+    # path: ../alvamind-one-library-frontend
+    path: ../project
 
 dev_dependencies:
   flutter_lints: ^3.0.0

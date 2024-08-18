@@ -1,15 +1,15 @@
 import 'package:complainz/view/login/login_view.dart';
-import 'package:complainz/widgets/app_dialog.dart';
-import 'package:complainz/widgets/app_snackbar.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:project/widgets/app_dialog.dart';
+import 'package:project/widgets/app_snackbar.dart';
+import 'package:project/widgets/console_log.dart';
 import 'package:complainz/repository/register_repository.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class RegisterFormViewModel extends ChangeNotifier {
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
-  //final dateBirthController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -22,16 +22,6 @@ class RegisterFormViewModel extends ChangeNotifier {
     confirmPasswordController.dispose();
     super.dispose();
   }
-
-  Enum? register;
-  String errorMessage = '';
-  bool isLoading = true;
-  bool isRegister = false;
-
-  Enum? get registerUser => register;
-  String get errorMessageUser => errorMessage;
-  bool get isLoadingUser => isLoading;
-  bool get isRegisterUser => isRegister;
 
   Future<bool> registerValidator(NavigatorState navigator) async {
     if (usernameController.text.isEmpty) {
@@ -50,6 +40,13 @@ class RegisterFormViewModel extends ChangeNotifier {
       );
       return false;
     }
+    if (!EmailValidator.validate(emailController.text)) {
+      AppSnackbar.show(navigator,
+          title: "Format email tidak valid",
+          titleStyle: const TextStyle(fontWeight: FontWeight.w600),
+          backgroundColor: Colors.red);
+      return false;
+    }
     if (phoneController.text.isEmpty) {
       AppSnackbar.show(
         navigator,
@@ -58,11 +55,26 @@ class RegisterFormViewModel extends ChangeNotifier {
       );
       return false;
     }
-    if (passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty) {
+    if (passwordController.text.isEmpty) {
       AppSnackbar.show(
         navigator,
-        title: 'Password dan ulangi password tidak boleh kosong',
+        title: 'Password tidak boleh kosong',
+        backgroundColor: Colors.red,
+      );
+      return false;
+    }
+    if (confirmPasswordController.text.isEmpty) {
+      AppSnackbar.show(
+        navigator,
+        title: 'Ulangi password tidak boleh kosong',
+        backgroundColor: Colors.red,
+      );
+      return false;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      AppSnackbar.show(
+        navigator,
+        title: 'Password dan ulangi password tidak sama',
         backgroundColor: Colors.red,
       );
       return false;
@@ -73,7 +85,7 @@ class RegisterFormViewModel extends ChangeNotifier {
   Future<void> onRegister(NavigatorState navigator) async {
     try {
       if (!(await registerValidator(navigator))) {
-        cl('[onRegister].registerValidator  false');
+        cl('[onRegister].registerValidator false');
         return;
       }
 
@@ -89,143 +101,66 @@ class RegisterFormViewModel extends ChangeNotifier {
           )) ??
           false;
 
-      navigator.pop();
+      navigator.pop(); // Tutup dialog progress
 
       cl('[onRegister].res = $isSuccess');
 
       if (isSuccess) {
         cl('[onRegister].success = $isSuccess');
+
+        resetForm();
+
+        // Tampilkan notifikasi sukses
+        AppSnackbar.show(
+          navigator,
+          title: 'Registrasi berhasil',
+          backgroundColor: Colors.green,
+        );
+
+        // Tunggu sebentar agar pengguna bisa melihat notifikasi
+        await Future.delayed(const Duration(seconds: 2));
+
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginView()),
           (Route<dynamic> route) => false,
         );
       } else {
-        navigator.pop();
         cl('[onRegister].error = $isSuccess');
-        AppDialog.showErrorDialog(navigator, message: isSuccess.toString());
+
+        // Tampilkan notifikasi gagal
+        AppSnackbar.show(
+          navigator,
+          title: 'Registrasi gagal. Silakan coba lagi.',
+          backgroundColor: Colors.red,
+        );
       }
     } catch (e) {
       cl('[onRegister].error $e');
-      AppDialog.showErrorDialog(navigator,
-          message: 'Terjadi masalah', error: e.toString());
-    }
-  }
-/* 
-  Future<void> createRegisterUser({
-    required String username,
-    required String email,
-    required String phone,
-    //required String dateBirth,
-    required String password,
-    required String confirm_password,
-  }) async {
-    try {
-      isLoading = true;
-      notifyListeners();
 
-      RegisterRepository api = RegisterRepository();
-      register = await api.registerUser(
-        username: username,
-        email: email,
-        phone: phone,
-        //dateBirth: dateBirth,
-        password: password,
-        confirm_password: confirm_password,
-      );
-
-      if (register == Type.success) {
-        isRegister = true;
-        isLoading = false;
-        print('success');
-        notifyListeners();
-      } else {
-        isRegister = false;
-        isLoading = false;
-        notifyListeners();
+      // Tutup dialog progress jika masih terbuka
+      if (navigator.canPop()) {
+        navigator.pop();
       }
-    } catch (error) {
-      isRegister = false;
-      isLoading = false;
-      errorMessage = error.toString();
-      print('success');
-      notifyListeners();
-    }
-  } */
-}
 
-
-/* import 'package:complainz/widgets/app_snackbar.dart';
-import 'package:flutter/foundation.dart';
-import 'package:complainz/repository/register_repository.dart';
-import 'package:flutter/material.dart';
-
-class RegisterFormViewModel extends ChangeNotifier {
-  final usernameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  //final dateBirthController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
-  Enum? register;
-  String errorMessage = '';
-  bool isLoading = true;
-  bool isRegister = false;
-
-  Enum? get registerUser => register;
-  String get errorMessageUser => errorMessage;
-  bool get isLoadingUser => isLoading;
-  bool get isRegisterUser => isRegister;
-
-  Future<bool> registerValiator(NavigatorState navigator) async {
-    if (usernameController.text.isEmpty) {
+      // Tampilkan notifikasi error
       AppSnackbar.show(
         navigator,
-        title: 'Username tidak boleh kosong',
+        title: 'Terjadi kesalahan saat registrasi',
         backgroundColor: Colors.red,
       );
-    }
-    return true;
-  }
 
-  Future<void> createRegisterUser({
-    required String username,
-    required String email,
-    required String phone,
-    //required String dateBirth,
-    required String password,
-    required String confirm_password,
-  }) async {
-    try {
-      isLoading = true;
-      notifyListeners();
-
-      RegisterRepository api = RegisterRepository();
-      register = await api.registerUser(
-        username: username,
-        email: email,
-        phone: phone,
-        //dateBirth: dateBirth,
-        password: password,
-        confirm_password: confirm_password,
-      );
-
-      if (register == Type.success) {
-        isRegister = true;
-        isLoading = false;
-        print('success');
-        notifyListeners();
-      } else {
-        isRegister = false;
-        isLoading = false;
-        notifyListeners();
-      }
-    } catch (error) {
-      isRegister = false;
-      isLoading = false;
-      errorMessage = error.toString();
-      print('success');
-      notifyListeners();
+      // Tampilkan dialog error dengan detail
+      AppDialog.showErrorDialog(navigator,
+          message: 'Terjadi masalah saat registrasi', error: e.toString());
     }
   }
-} */
+
+  void resetForm() {
+    usernameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    notifyListeners();
+  }
+}

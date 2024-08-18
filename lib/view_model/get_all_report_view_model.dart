@@ -1,6 +1,6 @@
 import 'package:complainz/model/get_all_report_model.dart';
 import 'package:complainz/repository/get_all_report_repository.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:project/widgets/console_log.dart';
 import 'package:flutter/material.dart';
 
 class GetAllReportViewModel extends ChangeNotifier {

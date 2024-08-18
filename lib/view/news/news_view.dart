@@ -1,7 +1,7 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_appbar.dart';
-import 'package:complainz/widgets/app_card_news.dart';
+import 'package:project/widgets/app_appbar.dart';
+import 'package:project/widgets/app_card_news.dart';
 import 'package:flutter/material.dart';
 
 class NewsView extends StatefulWidget {

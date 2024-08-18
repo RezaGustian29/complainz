@@ -1,5 +1,6 @@
 import 'package:complainz/config/app_url.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:complainz/model/create_report_model.dart';
+import 'package:project/widgets/console_log.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,19 +24,23 @@ class CreateReportRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? getToken = prefs.getString('token');
       prefs.containsKey('token');
-      var response = await dio.post("${AppUrl.baseUrl}/complaintz/complaint",
-          data: {
-            "type": type,
-            "category_id": category_id,
-            "photo_url": photo_url,
-            "video_url": video_url,
-            "description": description,
-            "is_public": is_public,
-          },
-          options: Options(headers: {
+      var response = await dio.post(
+        "${AppUrl.baseUrl}/complaintz/complaint",
+        data: CreateReportModel(
+          type: type,
+          categoryId: category_id,
+          photoUrl: photo_url,
+          videoUrl: video_url,
+          description: description,
+          isPublic: is_public,
+        ),
+        options: Options(
+          headers: {
             'Authorization': 'Bearer $getToken',
             'Content-type': 'application/json; charset=UTF-8',
-          }));
+          },
+        ),
+      );
 
       if (response.statusCode == 200) {
         cl('[createReport].success = $response');
@@ -51,3 +56,12 @@ class CreateReportRepository {
     }
   }
 }
+
+/* {
+            "type": type,
+            "category_id": category_id,
+            "photo_url": photo_url,
+            "video_url": video_url,
+            "description": description,
+            "is_public": is_public,
+          }, */

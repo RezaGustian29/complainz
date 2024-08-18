@@ -1,8 +1,9 @@
 import 'package:complainz/repository/login_repository.dart';
 import 'package:complainz/view/bottom_navbar/bottom_navbar.dart';
-import 'package:complainz/widgets/app_dialog.dart';
-import 'package:complainz/widgets/app_snackbar.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:project/widgets/app_dialog.dart';
+import 'package:project/widgets/app_snackbar.dart';
+import 'package:project/widgets/console_log.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class LoginFormViewModel extends ChangeNotifier {
@@ -19,8 +20,19 @@ class LoginFormViewModel extends ChangeNotifier {
   Future<void> onLogin(NavigatorState navigator, BuildContext context) async {
     if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
       AppSnackbar.show(navigator,
-          title: 'Username atau password tidak boleh kosong');
+          title: 'Username atau password tidak boleh kosong',
+          titleStyle: const TextStyle(fontWeight: FontWeight.w600),
+          backgroundColor: Colors.red);
 
+      return;
+    }
+
+    //email validator
+    if (!EmailValidator.validate(usernameController.text)) {
+      AppSnackbar.show(navigator,
+          title: "Format email tidak valid",
+          titleStyle: const TextStyle(fontWeight: FontWeight.w600),
+          backgroundColor: Colors.red);
       return;
     }
 
@@ -56,49 +68,3 @@ class LoginFormViewModel extends ChangeNotifier {
     }
   }
 }
-
-
-/* import 'package:complainz/repository/login_repository.dart';
-import 'package:flutter/material.dart';
-
-class LoginFormViewModel extends ChangeNotifier {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  LoginStatus? _login;
-  String _errorMessage = '';
-  bool _isLoading = true;
-  bool _isLogin = false;
-  LoginStatus? get login => _login;
-  String get errorMessage => _errorMessage;
-  bool get isLoading => _isLoading;
-  bool get isLogin => _isLogin;
-
-  Future<void> onLogin({
-    required String username,
-    required String password,
-  }) async {
-    try {
-      _isLoading = true;
-      notifyListeners();
-
-      LoginRepository login = LoginRepository();
-      _login =
-          await login.userLogin(usernameEmail: username, password: password);
-      if (_login == LoginStatus.success) {
-        _isLogin = true;
-        _isLoading = false;
-        notifyListeners();
-      } else {
-        _isLogin = false;
-        _isLoading = false;
-        notifyListeners();
-      }
-    } catch (error) {
-      _isLoading = false;
-      _isLogin = false;
-      _errorMessage = error.toString();
-      notifyListeners();
-    }
-  }
-} */

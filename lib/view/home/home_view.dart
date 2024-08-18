@@ -1,8 +1,7 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/report/report_view.dart';
-import 'package:complainz/widgets/app_card.dart';
-import 'package:complainz/widgets/app_dialog.dart';
+import 'package:project/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {

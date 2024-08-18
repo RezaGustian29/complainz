@@ -1,6 +1,6 @@
 import 'package:complainz/config/app_url.dart';
 import 'package:complainz/model/get_all_report_model.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:project/widgets/console_log.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
