@@ -37,6 +37,7 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
               //const AppBackButton(text: 'Ganti Password'),
               const SizedBox(height: AppSizes.padding),
               form(),
+              const SizedBox(height: AppSizes.padding / 1.5),
               updateButton(),
             ],
           ),

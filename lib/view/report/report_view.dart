@@ -33,8 +33,8 @@ class _ReportViewState extends State<ReportView> {
     'Semua': true,
     'Terbaru': false,
     'Terlama': false,
-    'Complaint': false,
-    'Aspirasi': false,
+    // 'Complaint': false,
+    // 'Aspirasi': false,
   };
 
   @override

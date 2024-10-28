@@ -1,16 +1,41 @@
-# complainz
 
-A new Flutter project.
+# Complainz
 
-## Getting Started
+Complainz adalah sistem informasi pengaduan mahasiswa yang dikembangkan sebagai bagian dari studi independen dalam program Kampus Merdeka dan diangkat menjadi proyek skripsi. 
 
-This project is a starting point for a Flutter application.
+Proyek ini telah diperbarui untuk meningkatkan skalabilitas dan keterbacaan kode dengan mengimplementasikan design pattern MVVM (Model-View-ViewModel), penggunaan library reusable widget, serta state management dengan Provider. Pendekatan ini memungkinkan pemisahan yang jelas antara logika bisnis dan antarmuka pengguna, sehingga mempermudah pemeliharaan dan pengembangan lebih lanjut.
 
-A few resources to get you started if this is your first Flutter project:
+## Fitur Utama
+Fitur Utama
+- Pengelolaan Pengaduan: Pengguna dapat mengajukan pengaduan, melacak statusnya, dan menerima notifikasi tentang perkembangannya.
+- Histori Pengaduan: Menampilkan riwayat pengaduan yang pernah diajukan, memungkinkan pengguna untuk memantau status setiap keluhan.
+- Upload Image : Pengguna dapat menambahkan gambar baik dari kamera langsung maupun dari galery ketika membuat pengaduan.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Cara Instalasi
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone repositori ini:**
+   ```bash
+   git clone https://github.com/username/complainz.git
+
+2. **Masuk ke direktori proyek:**
+   ```bash
+   cd shamo
+
+3. **Instal dependensi pada proyek Flutter**
+   ```bash
+   flutter pub get
+
+
+## Preview
+![Fitur Utama Complainz](https://github.com/RezaGustian29/complainz/blob/assets/images/fitur_utama.png?raw=true)
+![Fitur Utama Complainz](https://github.com/RezaGustian29/complainz/blob/assets/images/home.png?raw=true)
+
+
+
+
+
+
+
+
+
+

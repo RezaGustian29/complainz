@@ -164,7 +164,7 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
             child: AppTextField(
               controller: model.usernameController,
-              hintText: 'Username/Email',
+              hintText: 'Email',
               borderRadius: AppSizes.radius * 1.5,
               rounded: false,
             ),
