@@ -27,8 +27,9 @@ Fitur Utama
 
 
 ## Preview
-![Fitur Utama Complainz](https://github.com/RezaGustian29/complainz/blob/assets/images/fitur_utama.png?raw=true)
-![Fitur Utama Complainz](https://github.com/RezaGustian29/complainz/blob/assets/images/home.png?raw=true)
+![Home Page](https://github.com/RezaGustian29/complainz/blob/dev/assets/images/home.png?raw=true)
+
+![Fitur Utama Complainz](https://github.com/RezaGustian29/complainz/blob/dev/assets/images/fitur_utama.png?raw=true)
 
 
 
