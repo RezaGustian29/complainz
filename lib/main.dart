@@ -16,12 +16,12 @@ import 'package:complainz/view/news/news_view.dart';
 import 'package:complainz/view/report/report_view.dart';
 import 'package:complainz/view/splash/splash_view.dart';
 import 'package:complainz/view/status/action_status_view.dart';
-import 'package:complainz/view/status/status_complaint_view.dart';
 import 'package:complainz/view/update/update_password_view.dart';
 import 'package:complainz/view/update/update_profile_view.dart';
 import 'package:complainz/view_model/create_aspiration_view_model.dart';
 import 'package:complainz/view_model/create_report_view_model.dart';
 import 'package:complainz/view_model/delete_account_view_model.dart';
+import 'package:complainz/view_model/delete_report_view_model.dart';
 import 'package:complainz/view_model/get_all_report_view_model.dart';
 import 'package:complainz/view_model/get_report_status_view_model.dart';
 import 'package:complainz/view_model/get_user_profile_view_model.dart';
@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
         ChangeNotifierProvider(create: (_) => UpdatePasswordViewModel()),
         ChangeNotifierProvider(create: (_) => DeleteAccountViewModel()),
+        ChangeNotifierProvider(create: (_) => DeleteReportViewModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -87,7 +88,6 @@ class MyApp extends StatelessWidget {
                 child: null, */
               ),
           '/create-aspiration': (context) => const CreateAspirationView(),
-          '/status': (context) => const StatusComplaintView(),
           '/my-account': (context) => const MyAccountView(),
           '/action-status': (context) => const ActionStatusView(),
           '/history': (context) => const HistoryReportView(),

@@ -1,6 +1,6 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_button.dart';
+import 'package:project/widgets/app_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

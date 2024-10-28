@@ -1,5 +1,7 @@
 import 'package:complainz/view/history/components/history_report_tile.dart';
+import 'package:complainz/view_model/delete_report_view_model.dart';
 import 'package:complainz/view_model/get_report_status_view_model.dart';
+import 'package:project/widgets/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
@@ -86,17 +88,6 @@ class _HistoryReportViewState extends State<HistoryReportView> {
           ],
           body: body(),
         ));
-    /* SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-          child: Column(
-            children: [
-              Expanded(child: body()),
-              const SizedBox(height: AppSizes.padding),
-            ],
-          ),
-        ),
-      ), */
   }
 
   Widget _buildButton(BuildContext context, String text) {
@@ -141,52 +132,9 @@ class _HistoryReportViewState extends State<HistoryReportView> {
     );
   }
 
-/* 
-  Widget _buildButton(BuildContext context, String text) {
-    bool isSelected = buttonState[text]!;
-
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          buttonState.updateAll((key, value) => false);
-          buttonState[text] = !isSelected;
-        });
-
-        // ignore: unused_local_variable
-        String sortOrder = 'asc';
-        if (text == 'Semua') {
-          sortOrder = 'All';
-        } else if (text == 'Pending') {
-          sortOrder = 'Pending';
-        } else if (text == 'DiProses') {
-          sortOrder = 'Proccess';
-        } else if (text == 'DiJawab') {
-          sortOrder = 'Resolved';
-        }
-
-        if (buttonState[text]!) {
-          Provider.of<GetReportStatusViewModel>(context, listen: false)
-              .filterReportStatus(status: sortOrder);
-        } else {
-          // Fetch all reports without any specific order if 'Semua' is selected or button is deselected
-          Provider.of<GetReportStatusViewModel>(context, listen: false)
-              .filterReportStatus(status: '');
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: isSelected ? Colors.white : Colors.black,
-        backgroundColor: isSelected ? AppColors.primaryColor : Colors.white,
-        side: const BorderSide(color: AppColors.primaryColor),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      child: Text(text),
-    );
-  } */
-
   Widget body() {
-    return Consumer<GetReportStatusViewModel>(builder: (context, model, _) {
+    return Consumer2<GetReportStatusViewModel, DeleteReportViewModel>(
+        builder: (context, model, deleteModel, _) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -195,18 +143,6 @@ class _HistoryReportViewState extends State<HistoryReportView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /*   Row(
-                  children: [
-                    Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.contentColor,
-                      ),
-                    ),
-                  ],
-                ), */
                 Text(
                   'Laporan Saya',
                   style: TextStyle(
@@ -235,7 +171,8 @@ class _HistoryReportViewState extends State<HistoryReportView> {
                 return HistoryReportTile(
                   description: result.description,
                   onPressed: () {
-                    _dialogBuilder(context);
+                    _showDeleteConfirmationDialog(
+                        context, deleteModel, result.id);
                   },
                   //description: "${i + 1}. ${result.description}",
                 );
@@ -247,10 +184,11 @@ class _HistoryReportViewState extends State<HistoryReportView> {
     });
   }
 
-  Future<void> _dialogBuilder(BuildContext context) {
-    return showDialog<void>(
+  void _showDeleteConfirmationDialog(
+      BuildContext context, DeleteReportViewModel deleteModel, int reportId) {
+    showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: AppColors.primaryColor,
           content: const SizedBox(
@@ -282,8 +220,13 @@ class _HistoryReportViewState extends State<HistoryReportView> {
                 ),
               ),
               onPressed: () {
-                //Navigator.of(context).pop();
-                success(context);
+                Navigator.of(dialogContext).pop();
+                _deleteReport(
+                  context,
+                  Navigator.of(context),
+                  deleteModel,
+                  reportId,
+                );
               },
             ),
             TextButton(
@@ -315,242 +258,28 @@ class _HistoryReportViewState extends State<HistoryReportView> {
     );
   }
 
-  Future<void> success(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          backgroundColor: AppColors.primaryColor,
-          content: SizedBox(
-            height: 100,
-            child: Column(
-              children: [
-                Icon(Icons.check, size: 50, color: AppColors.timelineColor),
-                SizedBox(height: AppSizes.padding / 2),
-                Text(
-                  'Laporan Terhapus',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.secondaryTextColor,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // ignore: non_constant_identifier_names
+  void _deleteReport(BuildContext context, NavigatorState Navigator,
+      DeleteReportViewModel deleteModel, int reportId) async {
+    await deleteModel.deleteResultCompaintId(id: reportId);
 
-  /* Widget body() {
-    return Consumer<GetReportStatusViewModel>(builder: (context, model, _) {
-      return Container(
-        padding: const EdgeInsets.all(AppSizes.padding),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.padding),
-          //color: AppColors.timelineColor,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Laporan Saya',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  Text(
-                    'Cabut',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: AppColors.primaryColor),
-            Expanded(
-              child: ListView.builder(
-                itemCount: model.reportStatus.length,
-                itemBuilder: (context, i) {
-                  final result = model.reportStatus[i];
-                  return HistoryReportTile(
-                    description: result.description,
-                    //description: "${i + 1}. ${result.description}",
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  } */
+    // Periksa apakah context masih valid
+    if (!context.mounted) return;
 
-  /* Widget filterButton() {
-    return InkWell(
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.padding),
-        ),
-        child: Row(
-          children: [
-            textWidget(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget textWidget() {
-    return const Text(
-      'Pending',
-      style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: AppColors.primaryColor),
-    );
-  } */
-}
-
-
-
-/* import 'package:complainz/config/app_colors.dart';
-import 'package:complainz/config/app_sizes.dart';
-import 'package:complainz/widgets/app_back_button.dart';
-import 'package:flutter/material.dart';
-
-class HistoryReportView extends StatefulWidget {
-  const HistoryReportView({super.key});
-
-  @override
-  State<HistoryReportView> createState() => _HistoryReportViewState();
-}
-
-class _HistoryReportViewState extends State<HistoryReportView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-          child: Column(
-            children: [
-              const AppBackButton(text: 'Riwayat Laporan'),
-              const SizedBox(height: AppSizes.padding),
-              body(),
-              const Spacer(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget body() {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.padding),
-      height: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.padding),
-        color: AppColors.timelineColor,
-      ),
-      child: Column(
-        children: [
-          Table(
-            border: TableBorder.all(color: AppColors.timelineColor),
-
-            //columnWidths: const <int, TableColumnWidth>{},
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: <TableRow>[
-              const TableRow(
-                children: <Widget>[
-                  TableCell(
-                    child: Text(
-                      'Laporan Saya',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Cabut',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: <Widget>[
-                  const Text(
-                    'Lantai 3 Ac Rusak',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Text(
-                    'Lantai 3 Ac Rusak',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  TextButton(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.radius * 1.5),
-                          color: AppColors.primaryColor),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppSizes.padding,
-                            vertical: AppSizes.padding / 2),
-                        child: Text(
-                          'Detail',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.secondaryTextColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/status');
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+    if (deleteModel.isDeleted) {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator, title: 'Laporan berhasil dihapus');
+      }
+      // Refresh the report list
+      if (context.mounted) {
+        Provider.of<GetReportStatusViewModel>(context, listen: false)
+            .getResultReportStatus(status: "All");
+      }
+    } else {
+      if (context.mounted) {
+        AppSnackbar.show(Navigator,
+            title: 'Gagal menghapus laporan: ${deleteModel.errorMessage}');
+      }
+    }
   }
 }
- */

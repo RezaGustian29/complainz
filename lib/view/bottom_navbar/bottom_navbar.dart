@@ -1,4 +1,3 @@
-import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/account/my_account_view.dart';
 import 'package:complainz/view/create_report/create_repor_list_viewt.dart';
@@ -55,7 +54,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   currentPageIndex = index;
                 });
               },
-              indicatorColor: AppColors.timelineColor,
+              indicatorColor: Colors.amber,
               selectedIndex: currentPageIndex,
               destinations: const <Widget>[
                 NavigationDestination(
@@ -63,6 +62,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   icon: Icon(
                     Icons.home_outlined,
                     size: 30,
+                    color: Colors.black,
                   ),
                   label: '',
                 ),
@@ -70,6 +70,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   icon: Icon(
                     Icons.add_comment_outlined,
                     size: 30,
+                    color: Colors.black,
                   ),
                   label: '',
                 ),
@@ -77,6 +78,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   icon: Icon(
                     Icons.verified_user_outlined,
                     size: 30,
+                    color: Colors.black,
                   ),
                   label: '',
                 ),

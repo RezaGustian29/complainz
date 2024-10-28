@@ -1,9 +1,9 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view_model/update_password_view_model.dart';
-import 'package:complainz/widgets/app_appbar.dart';
-import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_textfield.dart';
+import 'package:project/widgets/app_appbar.dart';
+import 'package:project/widgets/app_button.dart';
+import 'package:project/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +37,7 @@ class _UpdatePasswordViewState extends State<UpdatePasswordView> {
               //const AppBackButton(text: 'Ganti Password'),
               const SizedBox(height: AppSizes.padding),
               form(),
+              const SizedBox(height: AppSizes.padding / 1.5),
               updateButton(),
             ],
           ),

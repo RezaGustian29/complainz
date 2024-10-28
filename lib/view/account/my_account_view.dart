@@ -3,10 +3,10 @@ import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view/login/login_view.dart';
 import 'package:complainz/view_model/delete_account_view_model.dart';
 import 'package:complainz/view_model/get_user_profile_view_model.dart';
-import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_progres_indicator.dart';
-import 'package:complainz/widgets/app_snackbar.dart';
-import 'package:complainz/widgets/app_text_link.dart';
+import 'package:project/widgets/app_button.dart';
+import 'package:project/widgets/app_progres_indicator.dart';
+import 'package:project/widgets/app_snackbar.dart';
+import 'package:project/widgets/app_text_link.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +39,7 @@ class _MyAccountViewState extends State<MyAccountView> {
               pictureProfile(),
               const SizedBox(height: AppSizes.padding),
               cardInfo(),
-              const SizedBox(height: AppSizes.padding * 2),
+              const SizedBox(height: AppSizes.padding * 1.5),
               settingCard(),
               const SizedBox(height: AppSizes.padding),
               bottomButton(),

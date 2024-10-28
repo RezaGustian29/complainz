@@ -1,8 +1,8 @@
 import 'package:complainz/config/app_colors.dart';
 import 'package:complainz/config/app_sizes.dart';
 import 'package:complainz/view_model/login_form_view_model.dart';
-import 'package:complainz/widgets/app_button.dart';
-import 'package:complainz/widgets/app_textfield.dart';
+import 'package:project/widgets/app_button.dart';
+import 'package:project/widgets/app_textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -112,12 +112,6 @@ class _LoginViewState extends State<LoginView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(child: text()),
-        /*  Text(
-          'Hi! Selamat Datang!',
-          style: AppTextStyle.heading3(
-            color: AppColors.white,
-          ),
-        ),  */
         const SizedBox(height: AppSizes.padding),
         Container(
           padding: const EdgeInsets.symmetric(
@@ -158,39 +152,6 @@ class _LoginViewState extends State<LoginView> {
             ),
           ],
         )
-
-        /* Image.asset(
-          'assets/images/images_logo.png',
-          width: 30,
-          height: 30,
-        ),
-        const Text(
-          'Selamat Datang Kembali',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const Text(
-          'Laporkan keadaan terkini.',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.primaryColor,
-          ),
-          textAlign: TextAlign.center,
-        ), */
-        /*   const Text(
-            'Complainz sudah menantikan kamu, \nayo mulai laporkan keadaan terkini.',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: AppColors.primaryColor,
-            ),
-            textAlign: TextAlign.center,
-          ), */
       ],
     );
   }
@@ -203,7 +164,7 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
             child: AppTextField(
               controller: model.usernameController,
-              hintText: 'Username/Email',
+              hintText: 'Email',
               borderRadius: AppSizes.radius * 1.5,
               rounded: false,
             ),
@@ -219,28 +180,7 @@ class _LoginViewState extends State<LoginView> {
               obscureText: true,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSizes.padding / 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Lupa Password?',
-                        style: TextStyle(
-                          color: AppColors.font,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SizedBox(height: AppSizes.padding / 2),
           AppButton(
             text: 'Masuk',
             height: 45,

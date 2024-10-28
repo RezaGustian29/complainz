@@ -1,5 +1,5 @@
 import 'package:complainz/config/app_url.dart';
-import 'package:complainz/widgets/console_log.dart';
+import 'package:project/widgets/console_log.dart';
 import 'package:dio/dio.dart';
 
 enum Type { success, fail }
